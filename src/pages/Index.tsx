@@ -1,33 +1,46 @@
-import { useState } from "react";
-import { SovereignSidebar } from "@/components/SovereignSidebar";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CinematicIntro } from "@/components/CinematicIntro";
+import { HeroSection } from "@/components/HeroSection";
+import { ExperienceGrid } from "@/components/ExperienceGrid";
+import { HistorySection } from "@/components/HistorySection";
+import { GastronomySection } from "@/components/GastronomySection";
+import { AdventureSection } from "@/components/AdventureSection";
+import { AccommodationSection } from "@/components/AccommodationSection";
+import { CultureSection } from "@/components/CultureSection";
+import { FooterSection } from "@/components/FooterSection";
+import { FloatingNav } from "@/components/FloatingNav";
 import { RealitoOrb } from "@/components/RealitoOrb";
-import { DashboardView } from "@/components/DashboardView";
-import { ExplorerView } from "@/components/ExplorerView";
-import { RoutesView } from "@/components/RoutesView";
-import { CommerceView } from "@/components/CommerceView";
-import { HeritageView } from "@/components/HeritageView";
-import { TelemetryView } from "@/components/TelemetryView";
-
-const VIEWS: Record<string, React.ComponentType> = {
-  dashboard: DashboardView,
-  explorer: ExplorerView,
-  routes: RoutesView,
-  commerce: CommerceView,
-  heritage: HeritageView,
-  telemetry: TelemetryView,
-};
 
 const Index = () => {
-  const [activeView, setActiveView] = useState("dashboard");
-  const ViewComponent = VIEWS[activeView] || DashboardView;
+  const [introComplete, setIntroComplete] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
-      <SovereignSidebar activeView={activeView} onViewChange={setActiveView} />
-      <main className="ml-[220px] p-6 pb-24 max-w-6xl">
-        <ViewComponent />
-      </main>
-      <RealitoOrb />
+      <AnimatePresence>
+        {!introComplete && (
+          <CinematicIntro onComplete={() => setIntroComplete(true)} />
+        )}
+      </AnimatePresence>
+
+      {introComplete && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <FloatingNav />
+          <HeroSection />
+          <ExperienceGrid />
+          <HistorySection />
+          <GastronomySection />
+          <AdventureSection />
+          <AccommodationSection />
+          <CultureSection />
+          <FooterSection />
+          <RealitoOrb />
+        </motion.div>
+      )}
     </div>
   );
 };
