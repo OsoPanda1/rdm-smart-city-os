@@ -1,16 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { SovereignSidebar } from "@/components/SovereignSidebar";
+import { RealitoOrb } from "@/components/RealitoOrb";
+import { DashboardView } from "@/components/DashboardView";
+import { ExplorerView } from "@/components/ExplorerView";
+import { RoutesView } from "@/components/RoutesView";
+import { CommerceView } from "@/components/CommerceView";
+import { HeritageView } from "@/components/HeritageView";
+import { TelemetryView } from "@/components/TelemetryView";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const VIEWS: Record<string, React.ComponentType> = {
+  dashboard: DashboardView,
+  explorer: ExplorerView,
+  routes: RoutesView,
+  commerce: CommerceView,
+  heritage: HeritageView,
+  telemetry: TelemetryView,
+};
+
+const Index = () => {
+  const [activeView, setActiveView] = useState("dashboard");
+  const ViewComponent = VIEWS[activeView] || DashboardView;
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background">
+      <SovereignSidebar activeView={activeView} onViewChange={setActiveView} />
+      <main className="ml-[220px] p-6 pb-24 max-w-6xl">
+        <ViewComponent />
+      </main>
+      <RealitoOrb />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
