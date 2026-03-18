@@ -11,11 +11,11 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase(1), 500),
-      setTimeout(() => setPhase(2), 2000),
-      setTimeout(() => setPhase(3), 3500),
-      setTimeout(() => setPhase(4), 5500),
-      setTimeout(() => onComplete(), 7000),
+      setTimeout(() => setPhase(1), 900),
+      setTimeout(() => setPhase(2), 2500),
+      setTimeout(() => setPhase(3), 3900),
+      setTimeout(() => setPhase(4), 5800),
+      setTimeout(() => onComplete(), 7500),
     ];
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
@@ -23,7 +23,7 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
   return (
     <motion.div
       exit={{ opacity: 0 }}
-      transition={{ duration: 1.5 }}
+      transition={{ duration: 2.8 }}
       className="fixed inset-0 z-[100] bg-background flex items-center justify-center overflow-hidden"
     >
       {/* Background image with Ken Burns */}
@@ -45,7 +45,7 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-sm md:text-base tracking-[0.4em] uppercase text-muted-foreground mb-6 font-body"
         >
-          Sistema Soberano de Inteligencia Territorial
+          RDM DIGITAL BIENBENIDO A UN LUGAR CERCA DEL CIELO
         </motion.p>
 
         {/* Line 2: Title */}
@@ -65,7 +65,8 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
           transition={{ duration: 1 }}
           className="text-lg md:text-2xl text-muted-foreground font-display italic"
         >
-          Donde la plata forjó imperios y la bruma guarda secretos
+          "Entre Neblina y Montañas se esconde un tesoro
+          es un pueblito minero con corazon de oro"
         </motion.p>
 
         {/* Divider line */}
@@ -84,7 +85,7 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
           className="mt-6 inline-flex items-center gap-2 text-xs tracking-wider text-muted-foreground font-body"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-          RDM DIGITAL OS v4.1
+          RDM DIGITAL OS v1.0 Tecnolgia TAMV Online Orgullosamente Realmontese
           <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
         </motion.div>
       </div>
