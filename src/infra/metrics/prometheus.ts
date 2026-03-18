@@ -26,7 +26,7 @@ class Gauge {
   }
 
   dec() {
-    this.value -= 1;
+    this.value = Math.max(0, this.value - 1);
   }
 
   set(value: number) {
@@ -76,7 +76,7 @@ class Registry {
           const labels = Object.entries(entry.labels)
             .map(([k, v]) => `${k}="${v}"`)
             .join(",");
-          lines.push(`${metric.name}{${labels}} ${entry.value}`);
+          lines.push(labels ? `${metric.name}{${labels}} ${entry.value}` : `${metric.name} ${entry.value}`);
         }
       } else if (metric instanceof Gauge) {
         lines.push(`# TYPE ${metric.name} gauge`);
@@ -98,26 +98,40 @@ class Registry {
 
 export const register = new Registry();
 
-export const decisionLatency = new Histogram(
-  "decision_latency_ms",
-  "Latencia de decisiones del motor territorial",
-  [10, 25, 50, 100, 200, 500],
+export const isabellaTerritorialDecisionLatencyMs = new Histogram(
+  "isabella_territorial_decision_latency_ms",
+  "Latencia de decisiones territoriales Isabella",
+  [10, 25, 50, 100, 200, 500, 1000],
 );
 
 export const decisionScore = new Histogram(
   "decision_score",
   "Distribución del score calculado por turista",
-  [0, 20, 40, 60, 80, 100],
+  [0.2, 0.4, 0.6, 0.8, 1],
 );
 
 export const reviews = new Counter("reviews_total", "Volumen de reseñas por territorio y polaridad");
-
 export const consentEvents = new Counter("consent_events_total", "Total de eventos de consentimiento");
+export const reviewsScore = new Histogram("reviews_score", "Distribución de rating de reseñas", [1, 2, 3, 4, 5]);
 
 export const streamConnections = new Gauge("sse_connections", "Conexiones SSE activas");
+export const isabellaGeoLruSize = new Gauge("isabella_geo_lru_size", "Tamaño actual del LRU geoespacial");
+export const isabellaGeoLruCapacity = new Gauge("isabella_geo_lru_capacity", "Capacidad máxima del LRU geoespacial");
+export const isabellaMovementFilterAlpha = new Gauge("isabella_movement_filter_alpha", "Alpha del filtro EMA de movimiento");
+export const eventsDroppedTotal = new Counter("events_dropped_total", "Eventos descartados por backpressure");
 
-register.registerMetric(decisionLatency);
-register.registerMetric(decisionScore);
-register.registerMetric(reviews);
-register.registerMetric(consentEvents);
-register.registerMetric(streamConnections);
+// Backward compatibility export
+export const decisionLatency = isabellaTerritorialDecisionLatencyMs;
+
+[
+  isabellaTerritorialDecisionLatencyMs,
+  decisionScore,
+  reviews,
+  consentEvents,
+  reviewsScore,
+  streamConnections,
+  isabellaGeoLruSize,
+  isabellaGeoLruCapacity,
+  isabellaMovementFilterAlpha,
+  eventsDroppedTotal,
+].forEach((metric) => register.registerMetric(metric));

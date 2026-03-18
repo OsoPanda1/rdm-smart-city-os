@@ -35,7 +35,7 @@ describe("ExperienceOrchestrator", () => {
     const decision = orch.evaluar(mkTourist(now));
 
     expect(decision).toBeTruthy();
-    expect(decision?.nivel).toBe("CRITICO");
+    expect(decision?.level).toBe("CRITICO");
     expect(spy).toHaveBeenCalledTimes(1);
     expect(decision?.traceId).toBeTypeOf("string");
   });

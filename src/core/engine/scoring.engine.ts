@@ -1,4 +1,5 @@
 import { ThresholdRule, type ScoreRule } from "@/core/rules/scoring.rule";
+import type { ScoreBreakdown } from "@/core/models";
 
 export interface ScoreInput {
   distanceToExit: number;
@@ -10,7 +11,7 @@ export interface ScoreInput {
 export class ScoringEngine {
   constructor(private rules: ScoreRule[] = defaultRules()) {}
 
-  evaluar(input: ScoreInput) {
+  evaluar(input: ScoreInput): ScoreBreakdown {
     let total = 0;
     const factors: Record<string, number> = {};
 

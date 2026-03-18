@@ -12,6 +12,8 @@ import { FooterSection } from "@/components/FooterSection";
 import { FloatingNav } from "@/components/FloatingNav";
 import { RealitoOrb } from "@/components/RealitoOrb";
 import { DichosSection } from "@/components/DichosSection";
+import { TerritorialMap } from "@/components/TerritorialMap";
+import { ReviewPrompt } from "@/components/ReviewPrompt";
 
 const Index = () => {
   const [introComplete, setIntroComplete] = useState(false);
@@ -43,6 +45,8 @@ const Index = () => {
           <AdventureSection />
           <AccommodationSection />
           <CultureSection />
+          <TerritorialMap />
+          <ReviewPrompt />
           <FooterSection />
           <RealitoOrb />
         </motion.div>
