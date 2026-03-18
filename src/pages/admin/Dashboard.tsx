@@ -390,19 +390,19 @@ const AdminDashboard = () => {
         <Navbar />
         
         {/* Admin Header */}
-        <div className="bg-gradient-to-r from-amber-600 to-orange-700 pt-28 pb-12">
+        <div className="bg-gradient-to-r from-foreground to-foreground/85 pt-28 pb-12">
           <div className="container mx-auto px-4 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="flex items-center gap-3 mb-2">
-                <Store className="w-8 h-8 text-white" />
-                <h1 className="font-serif text-3xl md:text-4xl font-bold text-white">
+                <Store className="w-8 h-8 text-background" />
+                <h1 className="font-serif text-3xl md:text-4xl font-bold text-background">
                   Panel de Administración
                 </h1>
               </div>
-              <p className="text-white/80">
+              <p className="text-background/80">
                 Gestiona los negocios, dicho
 
 s y contenido de RDM Digital
@@ -417,8 +417,8 @@ s y contenido de RDM Digital
             <Card className="bg-card border-0 shadow-lg">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                    <Store className="w-5 h-5 text-blue-500" />
+                  <div className="w-10 h-10 rounded-full bg-secondary/90 flex items-center justify-center">
+                    <Store className="w-5 h-5 text-foreground" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.total}</p>
@@ -431,8 +431,8 @@ s y contenido de RDM Digital
             <Card className="bg-card border-0 shadow-lg">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  <div className="w-10 h-10 rounded-full bg-secondary/90 flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-foreground" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.active}</p>
@@ -445,8 +445,8 @@ s y contenido de RDM Digital
             <Card className="bg-card border-0 shadow-lg">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-yellow-500" />
+                  <div className="w-10 h-10 rounded-full bg-accent/35 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-foreground" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.pending}</p>
@@ -459,8 +459,8 @@ s y contenido de RDM Digital
             <Card className="bg-card border-0 shadow-lg">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
-                    <Star className="w-5 h-5 text-amber-500" />
+                  <div className="w-10 h-10 rounded-full bg-accent/35 flex items-center justify-center">
+                    <Star className="w-5 h-5 text-foreground" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.premium}</p>
@@ -506,7 +506,7 @@ s y contenido de RDM Digital
                     ))}
                   </SelectContent>
                 </Select>
-                <Button onClick={handleNewBusiness} className="bg-amber-600 hover:bg-amber-700">
+                <Button onClick={handleNewBusiness} className="bg-foreground text-background hover:bg-foreground/90">
                   <Plus className="w-4 h-4 mr-2" />
                   Nuevo Negocio
                 </Button>
@@ -534,13 +534,13 @@ s y contenido de RDM Digital
                               <div className="flex items-center gap-2">
                                 <h3 className="font-semibold truncate">{business.name}</h3>
                                 {business.isPremium && (
-                                  <Badge className="bg-amber-500">Premium</Badge>
+                                  <Badge className="bg-foreground text-background">Premium</Badge>
                                 )}
                                 {business.isFeatured && (
-                                  <Badge className="bg-blue-500">Destacado</Badge>
+                                  <Badge className="bg-secondary text-foreground">Destacado</Badge>
                                 )}
                                 {!business.isVerified && (
-                                  <Badge variant="outline" className="text-yellow-500 border-yellow-500">
+                                  <Badge variant="outline" className="text-foreground border-foreground/50">
                                     Pendiente
                                   </Badge>
                                 )}
@@ -570,7 +570,7 @@ s y contenido de RDM Digital
                                 onClick={() => handleTogglePremium(business.id)}
                                 title="Toggle Premium"
                               >
-                                <Star className={`w-4 h-4 ${business.isPremium ? "fill-amber-500 text-amber-500" : ""}`} />
+                                <Star className={`w-4 h-4 ${business.isPremium ? "fill-foreground text-foreground" : ""}`} />
                               </Button>
                               <Button 
                                 variant="ghost" 
@@ -578,7 +578,7 @@ s y contenido de RDM Digital
                                 onClick={() => handleToggleFeatured(business.id)}
                                 title="Toggle Destacado"
                               >
-                                <TrendingUp className={`w-4 h-4 ${business.isFeatured ? "text-blue-500" : ""}`} />
+                                <TrendingUp className={`w-4 h-4 ${business.isFeatured ? "text-foreground" : ""}`} />
                               </Button>
                               <Button 
                                 variant="ghost" 
@@ -939,7 +939,7 @@ s y contenido de RDM Digital
               <Button variant="outline" onClick={() => setIsEditing(false)}>
                 Cancelar
               </Button>
-              <Button onClick={handleSaveBusiness} className="bg-amber-600 hover:bg-amber-700">
+              <Button onClick={handleSaveBusiness} className="bg-foreground text-background hover:bg-foreground/90">
                 {selectedBusiness ? "Guardar Cambios" : "Crear Negocio"}
               </Button>
             </DialogFooter>

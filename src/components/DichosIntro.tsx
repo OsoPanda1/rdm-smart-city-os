@@ -73,7 +73,7 @@ export function DichosIntro({ onComplete }: DichosIntroProps) {
         transition={{ duration: 2 }}
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse at center, hsl(38 92% 50% / 0.08) 0%, transparent 60%)",
+          background: "radial-gradient(ellipse at center, hsl(var(--accent) / 0.35) 0%, transparent 60%)",
         }}
       />
 
@@ -142,7 +142,7 @@ export function DichosIntro({ onComplete }: DichosIntroProps) {
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="w-48 h-px mx-auto my-6"
           style={{
-            background: "linear-gradient(90deg, transparent, hsl(38 92% 50%), transparent)",
+            background: "linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.75), transparent)",
           }}
         />
 
@@ -185,7 +185,7 @@ export function DichosIntro({ onComplete }: DichosIntroProps) {
 
       {/* Corner vignettes */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: "radial-gradient(ellipse at center, transparent 50%, hsl(30 5% 3%) 100%)",
+        background: "radial-gradient(ellipse at center, transparent 50%, hsl(var(--foreground) / 0.18) 100%)",
       }} />
     </motion.div>
   );

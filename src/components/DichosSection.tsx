@@ -93,7 +93,7 @@ export function DichosSection({ onBack }: DichosSectionProps) {
       {/* Hero */}
       <div className="relative py-24 px-6 md:px-16 lg:px-24 overflow-hidden">
         <div className="absolute inset-0" style={{
-          background: "radial-gradient(ellipse at top, hsl(38 92% 50% / 0.06) 0%, transparent 50%)",
+          background: "radial-gradient(ellipse at top, hsl(var(--accent) / 0.35) 0%, transparent 50%)",
         }} />
 
         <div className="relative z-10 max-w-5xl mx-auto">

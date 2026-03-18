@@ -5,6 +5,25 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import Apoya from "./pages/Apoya.tsx";
+import Arte from "./pages/Arte.tsx";
+import Auth from "./pages/Auth.tsx";
+import Catalogo from "./pages/Catalogo.tsx";
+import Comunidad from "./pages/Comunidad.tsx";
+import Cultura from "./pages/Cultura.tsx";
+import Dichos from "./pages/Dichos.tsx";
+import Directorio from "./pages/Directorio.tsx";
+import Ecoturismo from "./pages/Ecoturismo.tsx";
+import Eventos from "./pages/Eventos.tsx";
+import Gastronomia from "./pages/Gastronomia.tsx";
+import Historia from "./pages/Historia.tsx";
+import Lugares from "./pages/Lugares.tsx";
+import Mapa from "./pages/Mapa.tsx";
+import NegociosPortal from "./pages/NegociosPortal.tsx";
+import Reglamento from "./pages/Reglamento.tsx";
+import Relatos from "./pages/Relatos.tsx";
+import Rutas from "./pages/Rutas.tsx";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +35,25 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/apoya" element={<Apoya />} />
+          <Route path="/arte" element={<Arte />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/comunidad" element={<Comunidad />} />
+          <Route path="/cultura" element={<Cultura />} />
+          <Route path="/dichos" element={<Dichos />} />
+          <Route path="/directorio" element={<Directorio />} />
+          <Route path="/ecoturismo" element={<Ecoturismo />} />
+          <Route path="/eventos" element={<Eventos />} />
+          <Route path="/gastronomia" element={<Gastronomia />} />
+          <Route path="/historia" element={<Historia />} />
+          <Route path="/lugares" element={<Lugares />} />
+          <Route path="/mapa" element={<Mapa />} />
+          <Route path="/negocios-portal" element={<NegociosPortal />} />
+          <Route path="/reglamento" element={<Reglamento />} />
+          <Route path="/relatos" element={<Relatos />} />
+          <Route path="/rutas" element={<Rutas />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
