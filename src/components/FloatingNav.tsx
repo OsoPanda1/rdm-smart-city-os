@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mountain, Menu, X } from "lucide-react";
+import { Mountain, Menu, X, BookOpen } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "inicio", label: "Inicio" },
@@ -12,7 +12,11 @@ const NAV_ITEMS = [
   { id: "cultura", label: "Cultura" },
 ];
 
-export function FloatingNav() {
+interface FloatingNavProps {
+  onDichosClick?: () => void;
+}
+
+export function FloatingNav({ onDichosClick }: FloatingNavProps) {
   const [visible, setVisible] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -49,6 +53,15 @@ export function FloatingNav() {
                 {item.label}
               </a>
             ))}
+            {onDichosClick && (
+              <button
+                onClick={onDichosClick}
+                className="px-3 py-2 text-xs font-body text-accent hover:text-accent/80 transition-colors rounded-lg hover:bg-muted/50 flex items-center gap-1.5 font-medium"
+              >
+                <BookOpen className="w-3 h-3" />
+                Dichos
+              </button>
+            )}
           </div>
 
           {/* Mobile */}
@@ -82,6 +95,17 @@ export function FloatingNav() {
               {item.label}
             </a>
           ))}
+          {onDichosClick && (
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                onDichosClick();
+              }}
+              className="block w-full text-left px-3 py-2.5 text-sm font-body text-accent hover:text-accent/80 transition-colors rounded-lg font-medium"
+            >
+              📜 Callejón de los Dichos
+            </button>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

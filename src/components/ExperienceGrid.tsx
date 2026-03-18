@@ -55,7 +55,11 @@ const EXPERIENCES = [
   },
 ];
 
-export function ExperienceGrid() {
+interface ExperienceGridProps {
+  onDichosClick?: () => void;
+}
+
+export function ExperienceGrid({ onDichosClick }: ExperienceGridProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 

@@ -14,7 +14,102 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dichos: {
+        Row: {
+          categoria: string
+          created_at: string
+          id: string
+          jerga_original: string
+          likes: number | null
+          personaje: string
+          significado: string
+          texto: string
+        }
+        Insert: {
+          categoria: string
+          created_at?: string
+          id?: string
+          jerga_original: string
+          likes?: number | null
+          personaje: string
+          significado: string
+          texto: string
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          id?: string
+          jerga_original?: string
+          likes?: number | null
+          personaje?: string
+          significado?: string
+          texto?: string
+        }
+        Relationships: []
+      }
+      interactions: {
+        Row: {
+          created_at: string
+          id: string
+          intent: string
+          latency_ms: number | null
+          query: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          intent: string
+          latency_ms?: number | null
+          query: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          intent?: string
+          latency_ms?: number | null
+          query?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      places: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          lat: number
+          lng: number
+          metadata: Json | null
+          name: string
+          rating: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          lat: number
+          lng: number
+          metadata?: Json | null
+          name: string
+          rating?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          lat?: number
+          lng?: number
+          metadata?: Json | null
+          name?: string
+          rating?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -11,9 +11,15 @@ import { CultureSection } from "@/components/CultureSection";
 import { FooterSection } from "@/components/FooterSection";
 import { FloatingNav } from "@/components/FloatingNav";
 import { RealitoOrb } from "@/components/RealitoOrb";
+import { DichosSection } from "@/components/DichosSection";
 
 const Index = () => {
   const [introComplete, setIntroComplete] = useState(false);
+  const [showDichos, setShowDichos] = useState(false);
+
+  if (showDichos) {
+    return <DichosSection onBack={() => setShowDichos(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -29,9 +35,9 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <FloatingNav />
+          <FloatingNav onDichosClick={() => setShowDichos(true)} />
           <HeroSection />
-          <ExperienceGrid />
+          <ExperienceGrid onDichosClick={() => setShowDichos(true)} />
           <HistorySection />
           <GastronomySection />
           <AdventureSection />
