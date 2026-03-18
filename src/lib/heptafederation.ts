@@ -1,3 +1,5 @@
+import type { IsabellaDecision } from "@/core/models";
+
 export type FederationId =
   | "DEKATEOTL"
   | "ANUBIS"
@@ -15,6 +17,7 @@ export type FederationModule = {
   role: string;
   status: "ACTIVE" | "IDLE" | "DEGRADED";
   health: number;
+  operationalScore: number;
 };
 
 export const HEPTAFEDERATION: FederationModule[] = [
@@ -26,6 +29,7 @@ export const HEPTAFEDERATION: FederationModule[] = [
     role: "Orquestador de axiología, veto ético y memoria de valores.",
     status: "ACTIVE",
     health: 0.98,
+    operationalScore: 0.97,
   },
   {
     id: "ANUBIS",
@@ -34,7 +38,8 @@ export const HEPTAFEDERATION: FederationModule[] = [
     stack: ["Dilithium-5", "Kyber-1024", "zk-SNARKs"],
     role: "Blindaje criptográfico poscuántico y túnel de soberanía.",
     status: "ACTIVE",
-    health: 1.0,
+    health: 1,
+    operationalScore: 0.99,
   },
   {
     id: "BOOKPI_DATAGIT",
@@ -44,6 +49,7 @@ export const HEPTAFEDERATION: FederationModule[] = [
     role: "Caja negra y trazabilidad granular de decisiones.",
     status: "ACTIVE",
     health: 0.94,
+    operationalScore: 0.95,
   },
   {
     id: "PHOENIX",
@@ -53,6 +59,7 @@ export const HEPTAFEDERATION: FederationModule[] = [
     role: "Topología de resiliencia sin SPOF y auto-reparación.",
     status: "ACTIVE",
     health: 0.96,
+    operationalScore: 0.92,
   },
   {
     id: "MDD_TAMV",
@@ -62,6 +69,7 @@ export const HEPTAFEDERATION: FederationModule[] = [
     role: "Motor de valor y financiamiento comunitario.",
     status: "ACTIVE",
     health: 0.93,
+    operationalScore: 0.91,
   },
   {
     id: "KAOS_HYPERRENDER",
@@ -71,6 +79,7 @@ export const HEPTAFEDERATION: FederationModule[] = [
     role: "Capa multisensorial y sinestesia digital Crystal Glow.",
     status: "IDLE",
     health: 0.89,
+    operationalScore: 0.88,
   },
   {
     id: "CHRONOS",
@@ -80,46 +89,34 @@ export const HEPTAFEDERATION: FederationModule[] = [
     role: "Planificador multiobjetivo territorial.",
     status: "ACTIVE",
     health: 0.97,
+    operationalScore: 0.96,
   },
 ];
 
-export type SiteSignals = {
-  relevance: number;
-  crowd: number;
-  heritage: number;
-  gastroAffinity: number;
-};
+export function applyDecisionToHeptafederation(decision?: IsabellaDecision) {
+  if (!decision) return HEPTAFEDERATION;
 
-export type Weights = {
-  w1: number;
-  w2: number;
-  w3: number;
-  w4: number;
-};
+  return HEPTAFEDERATION.map((module) => {
+    const stress = decision.retentionIntent === "SAFE_EXIT" ? 0.04 : decision.retentionIntent === "UPSELL" ? 0.02 : 0;
+    const operationalScore = Math.max(0.65, Math.min(1, module.health - stress));
 
-export const defaultWeights: Weights = {
-  w1: 0.35,
-  w2: 0.25,
-  w3: 0.25,
-  w4: 0.15,
-};
-
-export function scoreSite(signals: SiteSignals, weights = defaultWeights): number {
-  const { relevance, crowd, heritage, gastroAffinity } = signals;
-  const { w1, w2, w3, w4 } = weights;
-  const score = w1 * relevance + w2 * (1 - crowd) + w3 * heritage + w4 * gastroAffinity;
-  return Math.max(0, Math.min(1, score));
+    return {
+      ...module,
+      operationalScore,
+      status: operationalScore < 0.8 ? "DEGRADED" : module.status,
+    };
+  });
 }
 
-export function getGlobalHealth(): number {
-  return HEPTAFEDERATION.reduce((acc, m) => acc + m.health, 0) / HEPTAFEDERATION.length;
+export function getGlobalHealth(modules = HEPTAFEDERATION): number {
+  return modules.reduce((acc, m) => acc + m.operationalScore, 0) / modules.length;
 }
 
-export function getTelemetry() {
-  return HEPTAFEDERATION.map((m) => ({
+export function getTelemetry(modules = HEPTAFEDERATION) {
+  return modules.map((m) => ({
     id: m.id.slice(0, 3),
     label: m.name,
-    status: Math.round(m.health * 100),
+    status: Math.round(m.operationalScore * 100),
     specialty: m.specialty,
     statusLabel: m.status,
   }));

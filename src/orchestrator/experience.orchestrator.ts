@@ -1,13 +1,22 @@
 import { MovementFilter } from "@/core/behavior/movement.filter";
+import { detectMovementPattern } from "@/core/behavior/pattern.detector";
+import { endManualSpan, setSpanAttribute, startManualSpan } from "@/instrumentation.node";
 import { createTraceId } from "@/core/context/trace";
 import { type IClock, Clock } from "@/core/engine/deterministic-clock";
 import { ScoringEngine } from "@/core/engine/scoring.engine";
 import { withinBBox } from "@/core/geo/bbox";
 import { fastDistance } from "@/core/geo/haversine.fast";
 import { LRUCache } from "@/core/geo/lru-cache";
+import { LinearSpatialIndex } from "@/core/geo/spatial-index";
 import { bus, type EventBus } from "@/core/infra/event-bus";
-import type { Coordenadas, Decision, TuristaEstado } from "@/core/models";
-import { decisionLatency, decisionScore } from "@/infra/metrics/prometheus";
+import type { Coordenadas, IsabellaDecision, RetentionIntent, TuristaEstado } from "@/core/models";
+import {
+  decisionScore,
+  isabellaGeoLruCapacity,
+  isabellaGeoLruSize,
+  isabellaMovementFilterAlpha,
+  isabellaTerritorialDecisionLatencyMs,
+} from "@/infra/metrics/prometheus";
 
 interface OrchestratorOptions {
   cacheCapacity?: number;
@@ -18,6 +27,7 @@ interface OrchestratorOptions {
   eventBus?: EventBus;
   throttleMs?: number;
   proximityBBoxMeters?: number;
+  threshold?: number;
 }
 
 export class ExperienceOrchestrator {
@@ -28,7 +38,9 @@ export class ExperienceOrchestrator {
   private eventBus: EventBus;
   private throttleMs: number;
   private proximityBBoxMeters: number;
+  private threshold: number;
   private lastDecisionAt = new Map<string, number>();
+  private exitIndex = new LinearSpatialIndex();
 
   constructor(
     private exits: Coordenadas[],
@@ -45,18 +57,36 @@ export class ExperienceOrchestrator {
     this.movement = new MovementFilter(options.movementAlpha ?? 0.3);
     this.throttleMs = options.throttleMs ?? 45_000;
     this.proximityBBoxMeters = options.proximityBBoxMeters ?? 300;
+    this.threshold = options.threshold ?? 40;
+
+    this.exits.forEach((exit, idx) => {
+      this.exitIndex.upsert({ id: `exit-${idx}`, coords: exit });
+    });
+
+    isabellaGeoLruCapacity.set(options.cacheCapacity ?? 5000);
+    isabellaMovementFilterAlpha.set(this.movement.getAlpha());
   }
 
-  evaluar(t: TuristaEstado): Decision | null {
-    const started = this.clock.now();
-    const traceId = createTraceId();
+  allowExecution(touristId: string, windowMs = this.throttleMs): boolean {
+    const now = this.clock.now();
+    const previous = this.lastDecisionAt.get(touristId);
+    if (!previous) return true;
+    return now - previous >= windowMs;
+  }
 
-    const nearest = this.getNearestExit(t.coords);
-    if (!nearest || !withinBBox(t.coords, nearest, this.proximityBBoxMeters)) {
+  evaluar(t: TuristaEstado): IsabellaDecision | null {
+    const started = this.clock.now();
+    if (!this.allowExecution(t.id, this.throttleMs)) {
       return null;
     }
 
-    if (this.wasRecentlyNotified(t.id, started)) {
+    const traceId = createTraceId();
+    const span = startManualSpan("territorial.decision");
+    setSpanAttribute(span, "territory", t.territory ?? "RDM");
+
+    const nearest = this.getNearestExit(t.coords);
+    if (!nearest || !withinBBox(t.coords, nearest, this.proximityBBoxMeters)) {
+      endManualSpan(span);
       return null;
     }
 
@@ -66,6 +96,7 @@ export class ExperienceOrchestrator {
       dist = fastDistance(t.coords, nearest);
       this.cache.set(key, dist);
     }
+    isabellaGeoLruSize.set(this.cache.size());
 
     const rawSpeed = t.prevCoords ? fastDistance(t.prevCoords, t.coords) / 5 : 0;
     const speed = this.movement.update(rawSpeed);
@@ -79,50 +110,59 @@ export class ExperienceOrchestrator {
       speedMps: speed,
     });
 
-    if (score.total < 40) {
+    if (score.total < this.threshold) {
+      endManualSpan(span);
       return null;
     }
 
-    const decision: Decision = {
+    const pattern = detectMovementPattern({ speedMps: speed, distanceToExit: dist });
+    const retentionIntent = this.resolveIntent(score.total, pattern);
+
+    const decision: IsabellaDecision = {
       traceId,
-      accion: "PUSH_NOTIFICATION",
-      nivel: score.total >= 70 ? "CRITICO" : "ALERTA",
+      territory: t.territory ?? "RDM",
+      level: score.total >= 70 ? "CRITICO" : "ALERTA",
+      retentionIntent,
+      pattern,
+      distanceToExit: dist,
+      speedMps: speed,
+      coords: t.coords,
       payload: {
-        titulo: "Experiencia desbloqueada",
-        mensaje: "Ruta secreta activada antes de salir",
+        titulo: retentionIntent === "SAFE_EXIT" ? "Salida segura sugerida" : "Experiencia desbloqueada",
+        mensaje:
+          retentionIntent === "UPSELL"
+            ? "Última experiencia local disponible antes de salir"
+            : retentionIntent === "DISCOVERY"
+              ? "Ruta exploratoria activada cerca de ti"
+              : "Te guiamos por una salida segura y cultural",
         ruta_ar_activada: true,
       },
-      score: score.total,
-      factors: score.factors,
+      score,
     };
+
+    setSpanAttribute(span, "score", score.total);
+    setSpanAttribute(span, "pattern", pattern);
+    setSpanAttribute(span, "distanceToExit", dist);
+    setSpanAttribute(span, "speedMps", speed);
+    setSpanAttribute(span, "traceId", traceId);
 
     this.lastDecisionAt.set(t.id, started);
     this.eventBus.emit("isabella:decision", decision);
 
-    decisionScore.observe(decision.score);
-    decisionLatency.observe(this.clock.now() - started);
+    decisionScore.observe(Math.max(0, Math.min(1, decision.score.total / 100)));
+    isabellaTerritorialDecisionLatencyMs.observe(this.clock.now() - started);
+    endManualSpan(span);
 
     return decision;
   }
 
-  private wasRecentlyNotified(touristId: string, now: number): boolean {
-    const previous = this.lastDecisionAt.get(touristId);
-    if (!previous) return false;
-    return now - previous < this.throttleMs;
+  private resolveIntent(totalScore: number, pattern: string): RetentionIntent {
+    if (totalScore >= 80 || pattern === "EXITING") return "SAFE_EXIT";
+    if (totalScore >= 55) return "UPSELL";
+    return "DISCOVERY";
   }
 
   private getNearestExit(coords: Coordenadas): Coordenadas | null {
-    let nearest: Coordenadas | null = null;
-    let bestDistance = Number.POSITIVE_INFINITY;
-
-    for (const exit of this.exits) {
-      const current = fastDistance(coords, exit);
-      if (current < bestDistance) {
-        bestDistance = current;
-        nearest = exit;
-      }
-    }
-
-    return nearest;
+    return this.exitIndex.nearest(coords)?.coords ?? null;
   }
 }

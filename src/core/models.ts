@@ -5,6 +5,7 @@ export interface Coordenadas {
 
 export interface TuristaEstado {
   id: string;
+  territory?: string;
   coords: Coordenadas;
   prevCoords?: Coordenadas;
   stayTimeHours: number;
@@ -14,16 +15,29 @@ export interface TuristaEstado {
 }
 
 export type DecisionLevel = "CRITICO" | "ALERTA";
+export type RetentionIntent = "SAFE_EXIT" | "UPSELL" | "DISCOVERY";
 
-export interface Decision {
+export interface ScoreBreakdown {
+  total: number;
+  factors: Record<string, number>;
+}
+
+export interface IsabellaDecision {
   traceId: string;
-  accion: "PUSH_NOTIFICATION";
-  nivel: DecisionLevel;
+  territory: string;
+  level: DecisionLevel;
+  retentionIntent: RetentionIntent;
+  score: ScoreBreakdown;
+  pattern: "EXPLORING" | "EXITING" | "IDLE";
+  distanceToExit: number;
+  speedMps: number;
+  coords: Coordenadas;
   payload: {
     titulo: string;
     mensaje: string;
     ruta_ar_activada: boolean;
   };
-  score: number;
-  factors: Record<string, number>;
 }
+
+// backward-compatible alias for existing imports
+export type Decision = IsabellaDecision;

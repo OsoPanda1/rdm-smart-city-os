@@ -6,35 +6,37 @@ const RETRY_MS = 3_000;
 
 export async function GET() {
   let eventId = 0;
+  let keepAlive: ReturnType<typeof setInterval> | null = null;
+  const encoder = new TextEncoder();
+
+  const listener = (payload: unknown) => {
+    streamController?.enqueue(
+      encoder.encode(`id: ${eventId++}\nretry: ${RETRY_MS}\ndata: ${JSON.stringify(payload)}\n\n`),
+    );
+  };
+
+  let streamController: ReadableStreamDefaultController<Uint8Array> | null = null;
 
   const stream = new ReadableStream<Uint8Array>({
     start(controller) {
-      const encoder = new TextEncoder();
+      streamController = controller;
       streamConnections.inc();
-
-      const send = (data: unknown) => {
-        controller.enqueue(
-          encoder.encode(`id:${eventId++}\nretry:${RETRY_MS}\ndata:${JSON.stringify(data)}\n\n`),
-        );
-      };
-
-      const listener = (payload: unknown) => send(payload);
       bus.on("isabella:decision", listener);
 
-      const keepAlive = setInterval(() => {
-        controller.enqueue(encoder.encode(`:heartbeat ${Date.now()}\n\n`));
+      keepAlive = setInterval(() => {
+        controller.enqueue(encoder.encode(`: heartbeat ${Date.now()}\n\n`));
       }, HEARTBEAT_MS);
 
-      controller.enqueue(encoder.encode(`event:ready\ndata:{"ok":true}\n\n`));
-
-      return () => {
-        clearInterval(keepAlive);
-        bus.off("isabella:decision", listener);
-        streamConnections.dec();
-      };
+      controller.enqueue(encoder.encode(`event: ready\ndata: {"ok":true}\n\n`));
     },
     cancel() {
+      if (keepAlive) {
+        clearInterval(keepAlive);
+        keepAlive = null;
+      }
+      bus.off("isabella:decision", listener);
       streamConnections.dec();
+      streamController = null;
     },
   });
 

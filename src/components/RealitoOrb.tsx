@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Sparkles, ShieldCheck, Activity } from "lucide-react";
-import { getTelemetry, getGlobalHealth } from "@/lib/heptafederation";
+import { applyDecisionToHeptafederation, getTelemetry, getGlobalHealth } from "@/lib/heptafederation";
+import { useIsabellaSSE } from "@/hooks/useIsabellaSSE";
 import ReactMarkdown from "react-markdown";
 
 interface Message {
@@ -25,8 +26,11 @@ export function RealitoOrb() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const telemetry = getTelemetry();
-  const globalHealth = getGlobalHealth();
+  const { decision, connectionState } = useIsabellaSSE();
+
+  const modules = useMemo(() => applyDecisionToHeptafederation(decision ?? undefined), [decision]);
+  const telemetry = getTelemetry(modules);
+  const globalHealth = getGlobalHealth(modules);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -57,6 +61,9 @@ export function RealitoOrb() {
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({
+          traceId: decision?.traceId,
+          territory: decision?.territory ?? "RDM",
+          decision,
           messages: allMessages
             .filter((m) => m.id !== "welcome")
             .map((m) => ({ role: m.role, content: m.content })),
@@ -79,7 +86,7 @@ export function RealitoOrb() {
             return prev.map((m, i) =>
               i === prev.length - 1
                 ? { ...m, content: assistantContent }
-                : m
+                : m,
             );
           }
           return [
@@ -99,10 +106,11 @@ export function RealitoOrb() {
         buffer += decoder.decode(value, { stream: true });
 
         let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
+        while ((idx = buffer.indexOf("
+")) !== -1) {
           let line = buffer.slice(0, idx);
           buffer = buffer.slice(idx + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.endsWith("")) line = line.slice(0, -1);
           if (!line.startsWith("data: ")) continue;
           const json = line.slice(6).trim();
           if (json === "[DONE]") break;
@@ -111,7 +119,8 @@ export function RealitoOrb() {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) upsert(content);
           } catch {
-            buffer = line + "\n" + buffer;
+            buffer = line + "
+" + buffer;
             break;
           }
         }
@@ -158,7 +167,6 @@ export function RealitoOrb() {
             transition={{ duration: 0.3 }}
             className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-2rem)] h-[560px] rounded-2xl glass shadow-2xl flex flex-col overflow-hidden"
           >
-            {/* Header */}
             <div className="px-5 py-4 border-b border-border/50">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
@@ -181,7 +189,6 @@ export function RealitoOrb() {
                 </button>
               </div>
 
-              {/* Telemetry bar */}
               <div className="flex items-center gap-1.5">
                 {telemetry.map((t) => (
                   <div
@@ -210,19 +217,18 @@ export function RealitoOrb() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-3 mt-2 text-[9px] text-muted-foreground font-body">
+              <div className="flex items-center justify-between mt-2 text-[9px] text-muted-foreground font-body">
                 <span className="flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3 text-accent" />
                   PQC · Kyber-1024
                 </span>
                 <span className="flex items-center gap-1">
                   <Activity className="w-3 h-3 text-accent" />
-                  {(globalHealth * 100).toFixed(0)}% salud
+                  SSE: {connectionState}
                 </span>
               </div>
             </div>
 
-            {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((msg) => (
                 <div
@@ -270,7 +276,6 @@ export function RealitoOrb() {
               )}
             </div>
 
-            {/* Input */}
             <div className="p-3 border-t border-border/50">
               <div className="flex items-center gap-2">
                 <input

@@ -7,4 +7,8 @@ export class MovementFilter {
     this.lastSpeed = this.alpha * rawSpeed + (1 - this.alpha) * this.lastSpeed;
     return this.lastSpeed;
   }
+
+  getAlpha() {
+    return this.alpha;
+  }
 }
