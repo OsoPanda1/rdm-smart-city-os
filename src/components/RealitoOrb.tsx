@@ -195,11 +195,11 @@ export function RealitoOrb() {
                         style={{
                           width: `${t.status}%`,
                           background:
-                            t.status > 95
-                              ? "hsl(160 84% 39%)"
+                          t.status > 95
+                              ? "hsl(var(--success))"
                               : t.status > 85
-                              ? "hsl(38 92% 50%)"
-                              : "hsl(0 84% 60%)",
+                              ? "hsl(var(--accent))"
+                              : "hsl(var(--destructive))",
                         }}
                       />
                     </div>
