@@ -4,7 +4,7 @@ import { X, Send, Sparkles, ShieldCheck, Activity } from "lucide-react";
 import { applyDecisionToHeptafederation, getTelemetry, getGlobalHealth } from "@/lib/heptafederation";
 import { useIsabellaSSE } from "@/hooks/useIsabellaSSE";
 import ReactMarkdown from "react-markdown";
-import { federationBus } from "@/lib/tamv-kernel";
+import { useCivicEvent } from "@/hooks/useCivicEvent";
 
 interface Message {
   id: string;
@@ -30,6 +30,7 @@ export function RealitoOrb() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { decision, connectionState } = useIsabellaSSE();
+  const emit = useCivicEvent();
 
   const modules = useMemo(() => applyDecisionToHeptafederation(decision ?? undefined), [decision]);
   const telemetry = getTelemetry(modules);
@@ -88,15 +89,14 @@ export function RealitoOrb() {
           ...prev,
           { id: `a_${Date.now()}`, role: "assistant", content: response },
         ]);
-        await federationBus.publish({
-          id: crypto.randomUUID(),
-          type: "TOURISM_INTERACTION",
+        await emit({
+          type: "AI_INTERACTION",
           federation: "MDD_TAMV",
           payload: {
+            text: userMsg.content,
             intent: data.intent ?? "CHARLA_GENERAL",
             sentiment: data.sentiment ?? "neutral",
           },
-          occurredAt: new Date().toISOString(),
           source: "WEB_PORTAL",
           correlationId: decision?.traceId,
         });
@@ -140,12 +140,23 @@ export function RealitoOrb() {
         buffer += decoder.decode(value, { stream: true });
 
         let idx: number;
-        while ((idx = buffer.indexOf("
-")) !== -1) {
+        while ((idx = buffer.indexOf("\n")) !== -1) {
           let line = buffer.slice(0, idx);
           buffer = buffer.slice(idx + 1);
-          if (line.endsWith("")) line = line.slice(0, -1);
-          if (!line.startsWith("data: ")) continue;
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+            buffer = line + "\n" + buffer;
+
+      await emit({
+        type: "AI_INTERACTION",
+        federation: "MDD_TAMV",
+        payload: {
+          text: userMsg.content,
+          intent: "CHAT_STREAM",
+          response: assistantContent,
+        },
+        source: "WEB_PORTAL",
+        correlationId: decision?.traceId,
+      });
           const json = line.slice(6).trim();
           if (json === "[DONE]") break;
           try {

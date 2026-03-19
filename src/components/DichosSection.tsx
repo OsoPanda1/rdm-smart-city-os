@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { DichosIntro } from "./DichosIntro";
-import { federationBus } from "@/lib/tamv-kernel";
+import { useCivicEvent } from "@/hooks/useCivicEvent";
 
 const CATEGORIES = [
   { id: "all", label: "Todos", icon: "✨" },
@@ -46,6 +46,7 @@ export function DichosSection({ onBack }: DichosSectionProps) {
   const [likedDichos, setLikedDichos] = useState<Set<string>>(new Set());
   const [dichos, setDichos] = useState<Dicho[]>([]);
   const [loading, setLoading] = useState(true);
+  const emit = useCivicEvent();
 
   useEffect(() => {
     async function fetchDichos() {
@@ -184,7 +185,18 @@ export function DichosSection({ onBack }: DichosSectionProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + i * 0.1 }}
                   className="group relative rounded-2xl overflow-hidden glass p-6 hover:border-accent/30 transition-colors cursor-pointer"
-                  onClick={() => setExpandedId(expandedId === d.id ? null : d.id)}
+                  onClick={() => {
+                    const next = expandedId === d.id ? null : d.id;
+                    setExpandedId(next);
+                    if (next) {
+                      void emit({
+                        type: "DICHO_CONSULTED",
+                        federation: "BOOKPI",
+                        payload: { id: d.id, tags: [d.categoria], origen: d.personaje },
+                        source: "WEB_PORTAL",
+                      });
+                    }
+                  }}
                 >
                   <div className="absolute top-3 right-3">
                     <Badge variant="outline" className="text-[10px] border-accent/30 text-accent font-body">
@@ -268,15 +280,14 @@ export function DichosSection({ onBack }: DichosSectionProps) {
                   const next = expandedId === d.id ? null : d.id;
                   setExpandedId(next);
                   if (next) {
-                    void federationBus.publish({
-                      id: crypto.randomUUID(),
+                    void emit({
                       type: "DICHO_CONSULTED",
                       federation: "BOOKPI",
                       payload: {
-                        dichoId: d.id,
-                        categoria: d.categoria,
+                        id: d.id,
+                        tags: [d.categoria],
+                        origen: d.personaje,
                       },
-                      occurredAt: new Date().toISOString(),
                       source: "WEB_PORTAL",
                     });
                   }
