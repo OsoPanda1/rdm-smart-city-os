@@ -48,6 +48,7 @@ const Index = () => {
           <CultureSection />
           <InteractiveMap />
           <TerritorialMap />
+          <ReviewPrompt />
           <FooterSection />
           <RealitoOrb />
         </motion.div>
