@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { DichosIntro } from "./DichosIntro";
+import { federationBus } from "@/lib/tamv-kernel";
 
 const CATEGORIES = [
   { id: "all", label: "Todos", icon: "✨" },
@@ -48,9 +49,22 @@ export function DichosSection({ onBack }: DichosSectionProps) {
 
   useEffect(() => {
     async function fetchDichos() {
-      const { data } = await supabase.from("dichos").select("*").order("likes", { ascending: false });
-      if (data) setDichos(data as Dicho[]);
-      setLoading(false);
+      try {
+        if (import.meta.env.VITE_API_GATEWAY) {
+          const res = await fetch(`${import.meta.env.VITE_API_GATEWAY}/dichos`);
+          if (res.ok) {
+            const data = await res.json();
+            setDichos((data.items ?? []) as Dicho[]);
+            setLoading(false);
+            return;
+          }
+        }
+
+        const { data } = await supabase.from("dichos").select("*").order("likes", { ascending: false });
+        if (data) setDichos(data as Dicho[]);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchDichos();
   }, []);
@@ -250,7 +264,23 @@ export function DichosSection({ onBack }: DichosSectionProps) {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.02 }}
-                onClick={() => setExpandedId(expandedId === d.id ? null : d.id)}
+                onClick={() => {
+                  const next = expandedId === d.id ? null : d.id;
+                  setExpandedId(next);
+                  if (next) {
+                    void federationBus.publish({
+                      id: crypto.randomUUID(),
+                      type: "DICHO_CONSULTED",
+                      federation: "BOOKPI",
+                      payload: {
+                        dichoId: d.id,
+                        categoria: d.categoria,
+                      },
+                      occurredAt: new Date().toISOString(),
+                      source: "WEB_PORTAL",
+                    });
+                  }
+                }}
                 className="group glass rounded-xl p-4 cursor-pointer hover:border-accent/20 transition-all"
               >
                 <div className="flex items-start gap-3">
