@@ -1,13 +1,16 @@
-import { SovereignPageShell } from "@/components/SovereignPageShell";
+import { InteractiveMap } from "@/components/InteractiveMap";
+import { FloatingNav } from "@/components/FloatingNav";
+import { RealitoOrb } from "@/components/RealitoOrb";
 
 const Mapa = () => {
   return (
-    <SovereignPageShell
-      eyebrow="Cartografía Dinámica"
-      title="Mapa Inteligente"
-      description="Visualización espacial unificada para todo el ecosistema TAMV Digital Nexus."
-      bullets={['Capas de movilidad, seguridad y densidad turística.','Ruteo contextual entre lugares, negocios y eventos.','Base preparada para experiencias 3D, 4D y XR.']}
-    />
+    <div className="min-h-screen bg-background">
+      <FloatingNav />
+      <div className="pt-4">
+        <InteractiveMap />
+      </div>
+      <RealitoOrb />
+    </div>
   );
 };
 

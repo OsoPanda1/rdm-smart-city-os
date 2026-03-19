@@ -88,7 +88,7 @@ export function getSystemMetrics() {
 
 export interface KernelOutput {
   intent: Intent;
-  recommendations: typeof REAL_DEL_MONTE_SITES;
+  recommendations: typeof REAL_DEL_MONTE_SITES[number][];
   narrative: string;
   confidence: number;
 }
