@@ -4,6 +4,7 @@ import { X, Send, Sparkles, ShieldCheck, Activity } from "lucide-react";
 import { applyDecisionToHeptafederation, getTelemetry, getGlobalHealth } from "@/lib/heptafederation";
 import { useIsabellaSSE } from "@/hooks/useIsabellaSSE";
 import ReactMarkdown from "react-markdown";
+import { federationBus } from "@/lib/tamv-kernel";
 
 interface Message {
   id: string;
@@ -11,7 +12,9 @@ interface Message {
   content: string;
 }
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/realito-chat`;
+const CHAT_URL = import.meta.env.VITE_ISABELLA_URL
+  ? `${import.meta.env.VITE_ISABELLA_URL}/urban-chat`
+  : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/realito-chat`;
 
 export function RealitoOrb() {
   const [open, setOpen] = useState(false);
@@ -54,23 +57,54 @@ export function RealitoOrb() {
     let assistantContent = "";
 
     try {
+      const body = import.meta.env.VITE_ISABELLA_URL
+        ? { text: userMsg.content, context: { traceId: decision?.traceId } }
+        : {
+            traceId: decision?.traceId,
+            territory: decision?.territory ?? "RDM",
+            decision,
+            messages: allMessages
+              .filter((m) => m.id !== "welcome")
+              .map((m) => ({ role: m.role, content: m.content })),
+          };
+
       const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({
-          traceId: decision?.traceId,
-          territory: decision?.territory ?? "RDM",
-          decision,
-          messages: allMessages
-            .filter((m) => m.id !== "welcome")
-            .map((m) => ({ role: m.role, content: m.content })),
-        }),
+        body: JSON.stringify(body),
       });
 
-      if (!resp.ok || !resp.body) {
+      if (!resp.ok) {
+        throw new Error("Stream failed");
+      }
+
+      if (import.meta.env.VITE_ISABELLA_URL) {
+        const data = await resp.json();
+        const response = data.response ?? "ISABELLA no pudo responder en este momento.";
+        setMessages((prev) => [
+          ...prev,
+          { id: `a_${Date.now()}`, role: "assistant", content: response },
+        ]);
+        await federationBus.publish({
+          id: crypto.randomUUID(),
+          type: "TOURISM_INTERACTION",
+          federation: "MDD_TAMV",
+          payload: {
+            intent: data.intent ?? "CHARLA_GENERAL",
+            sentiment: data.sentiment ?? "neutral",
+          },
+          occurredAt: new Date().toISOString(),
+          source: "WEB_PORTAL",
+          correlationId: decision?.traceId,
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (!resp.body) {
         throw new Error("Stream failed");
       }
 
