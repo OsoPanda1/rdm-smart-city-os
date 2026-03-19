@@ -1,13 +1,18 @@
-import { SovereignPageShell } from "@/components/SovereignPageShell";
+import { InteractiveMap } from "@/components/InteractiveMap";
+import { FloatingNav } from "@/components/FloatingNav";
+import { RealitoOrb } from "@/components/RealitoOrb";
+import { FooterSection } from "@/components/FooterSection";
 
 const Lugares = () => {
   return (
-    <SovereignPageShell
-      eyebrow="Atlas Territorial"
-      title="Lugares"
-      description="Mapa narrativo de puntos emblemáticos, miradores y centros de interés."
-      bullets={['Exploración por proximidad, relevancia y perfil de viajero.','Vistas de detalle con fotografía y recomendaciones locales.','Flujo conectado con eventos, rutas y ecoturismo.']}
-    />
+    <div className="min-h-screen bg-background">
+      <FloatingNav />
+      <div className="pt-4">
+        <InteractiveMap />
+      </div>
+      <FooterSection />
+      <RealitoOrb />
+    </div>
   );
 };
 

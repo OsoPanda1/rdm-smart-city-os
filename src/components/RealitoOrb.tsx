@@ -140,11 +140,10 @@ export function RealitoOrb() {
         buffer += decoder.decode(value, { stream: true });
 
         let idx: number;
-        while ((idx = buffer.indexOf("
-")) !== -1) {
+        while ((idx = buffer.indexOf("\n")) !== -1) {
           let line = buffer.slice(0, idx);
           buffer = buffer.slice(idx + 1);
-          if (line.endsWith("")) line = line.slice(0, -1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
           if (!line.startsWith("data: ")) continue;
           const json = line.slice(6).trim();
           if (json === "[DONE]") break;
@@ -153,8 +152,7 @@ export function RealitoOrb() {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) upsert(content);
           } catch {
-            buffer = line + "
-" + buffer;
+            buffer = line + "\n" + buffer;
             break;
           }
         }
@@ -206,7 +204,7 @@ export function RealitoOrb() {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center relative">
                     <Sparkles className="w-5 h-5 text-accent-foreground" />
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background bg-success" />
                   </div>
                   <div>
                     <p className="text-sm font-display font-bold">Realito AI</p>

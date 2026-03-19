@@ -5,11 +5,11 @@ import { REAL_DEL_MONTE_SITES } from "@/lib/kernel";
 import "leaflet/dist/leaflet.css";
 
 const CATEGORIES_COLORS: Record<string, string> = {
-  historia: "#d4a843",
-  cultura: "#8b6914",
-  gastronomia: "#e8b831",
-  aventura: "#6b8e23",
-  hospedaje: "#7b68ee",
+  historia: "#e07730",
+  cultura: "#5b8cc9",
+  gastronomia: "#e8a040",
+  aventura: "#6b8e56",
+  hospedaje: "#8b7ec8",
 };
 
 export function InteractiveMap() {

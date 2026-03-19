@@ -13,6 +13,7 @@ import { FloatingNav } from "@/components/FloatingNav";
 import { RealitoOrb } from "@/components/RealitoOrb";
 import { DichosSection } from "@/components/DichosSection";
 import { TerritorialMap } from "@/components/TerritorialMap";
+import { InteractiveMap } from "@/components/InteractiveMap";
 import { ReviewPrompt } from "@/components/ReviewPrompt";
 
 const Index = () => {
@@ -45,6 +46,7 @@ const Index = () => {
           <AdventureSection />
           <AccommodationSection />
           <CultureSection />
+          <InteractiveMap />
           <TerritorialMap />
           <ReviewPrompt />
           <FooterSection />
