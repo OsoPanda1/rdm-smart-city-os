@@ -111,30 +111,24 @@ export function RealitoOrb() {
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
+      const assistantId = `a_${Date.now()}`;
+
+      setMessages((prev) => [
+        ...prev,
+        { id: assistantId, role: "assistant", content: "" },
+      ]);
 
       const upsert = (chunk: string) => {
         assistantContent += chunk;
         setMessages((prev) => {
           const last = prev[prev.length - 1];
-          if (last?.role === "assistant" && last.id !== "welcome") {
-            return prev.map((m, i) =>
-              i === prev.length - 1
-                ? { ...m, content: assistantContent }
-                : m,
-            );
-          }
-          return [
-            ...prev,
-            {
-              id: `a_${Date.now()}`,
-              role: "assistant",
-              content: assistantContent,
-            },
-          ];
+          if (last?.id !== assistantId) return prev;
+          return [...prev.slice(0, -1), { ...last, content: assistantContent }];
         });
       };
 
-      while (true) {
+      let streamEnded = false;
+      while (!streamEnded) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
@@ -144,7 +138,24 @@ export function RealitoOrb() {
           let line = buffer.slice(0, idx);
           buffer = buffer.slice(idx + 1);
           if (line.endsWith("\r")) line = line.slice(0, -1);
-            buffer = line + "\n" + buffer;
+
+          if (!line.startsWith("data:")) continue;
+          const json = line.slice(5).trim();
+          if (!json) continue;
+          if (json === "[DONE]") {
+            streamEnded = true;
+            break;
+          }
+
+          try {
+            const parsed = JSON.parse(json);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) upsert(content);
+          } catch {
+            continue;
+          }
+        }
+      }
 
       await emit({
         type: "AI_INTERACTION",
@@ -157,19 +168,6 @@ export function RealitoOrb() {
         source: "WEB_PORTAL",
         correlationId: decision?.traceId,
       });
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") break;
-          try {
-            const parsed = JSON.parse(json);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) upsert(content);
-          } catch {
-            buffer = line + "
-" + buffer;
-            break;
-          }
-        }
-      }
     } catch (e) {
       console.error("Realito error:", e);
       setMessages((prev) => [
