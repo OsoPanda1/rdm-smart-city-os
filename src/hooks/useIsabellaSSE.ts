@@ -8,15 +8,24 @@ interface Options {
   maxRetries?: number;
 }
 
+const DEFAULT_STREAM_URL = import.meta.env.VITE_API_GATEWAY
+  ? `${import.meta.env.VITE_API_GATEWAY}/isabella/stream`
+  : undefined;
+
 export function useIsabellaSSE(options: Options = {}) {
-  const { url = "/api/isabella/stream", maxRetries = 6 } = options;
+  const { url = DEFAULT_STREAM_URL, maxRetries = 6 } = options;
   const [decision, setDecision] = useState<IsabellaDecision | null>(null);
-  const [state, setState] = useState<ConnectionState>("connecting");
+  const [state, setState] = useState<ConnectionState>(url ? "connecting" : "closed");
   const retries = useRef(0);
   const reconnectTimer = useRef<number | null>(null);
   const sourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
+    if (!url) {
+      setState("closed");
+      return;
+    }
+
     const connect = () => {
       setState(retries.current > 0 ? "reconnecting" : "connecting");
       const source = new EventSource(url);

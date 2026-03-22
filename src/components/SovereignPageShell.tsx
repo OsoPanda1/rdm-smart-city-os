@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ReactNode, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import { ModuleCinematicIntro } from "@/components/ModuleCinematicIntro";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -15,9 +16,22 @@ interface SovereignPageShellProps {
 }
 
 export function SovereignPageShell({ eyebrow, title, description, bullets, children }: SovereignPageShellProps) {
+  const [showTrailer, setShowTrailer] = useState(true);
+
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
+        <AnimatePresence>
+          {showTrailer && (
+            <ModuleCinematicIntro
+              eyebrow={eyebrow}
+              title={title}
+              description={description}
+              onComplete={() => setShowTrailer(false)}
+            />
+          )}
+        </AnimatePresence>
+
         <Navbar />
 
         <main className="pt-28 pb-8">
