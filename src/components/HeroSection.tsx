@@ -2,7 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ChevronDown, MapPin, Mountain } from "lucide-react";
 import heroAerial from "@/assets/hero-aerial.jpg";
-import mistyMountains from "@/assets/misty-mountains.jpg";
+import cinematicHero from "@/assets/rdm-hero-cinematic.png";
+import bandcampHeader from "@/assets/rdm-header-bandcamp.jpg";
 
 export function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -22,11 +23,23 @@ export function HeroSection() {
         <img
           src={heroAerial}
           alt="Vista aérea de Real del Monte"
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/30" />
+        <img
+          src={cinematicHero}
+          alt="Composición visual de Real del Monte"
+          className="absolute inset-0 h-full w-full object-cover opacity-45 mix-blend-screen"
+          loading="eager"
+        />
+        <img
+          src={bandcampHeader}
+          alt="Textura territorial de Real del Monte"
+          className="absolute inset-0 h-full w-full object-cover opacity-25 mix-blend-soft-light"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/20 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/65 via-transparent to-background/35" />
       </motion.div>
 
       {/* Content */}

@@ -3,6 +3,21 @@ import { LONG_FORM_NARRATIVES, REAL_DEL_MONTE_FACTS } from "@/lib/tourism-knowle
 import { type Intent } from "./types";
 
 export const REAL_DEL_MONTE_SITES = [
+  { id: "1", name: "Mina de Acosta", category: "historia", lat: 20.138, lng: -98.671, rating: 4.8, description: "Mina histórica del siglo XVIII, joya del patrimonio minero." },
+  { id: "2", name: "Museo de Medicina Laboral", category: "cultura", lat: 20.139, lng: -98.673, rating: 4.6, description: "Historia médica de los mineros de Real del Monte." },
+  { id: "3", name: "Panteón Inglés", category: "historia", lat: 20.137, lng: -98.67, rating: 4.9, description: "Cementerio histórico de mineros británicos, único en México." },
+  { id: "4", name: "Pastes El Portal", category: "gastronomia", lat: 20.14, lng: -98.672, rating: 4.7, description: "Los mejores pastes tradicionales cornish del pueblo." },
+  { id: "5", name: "Pastes Kikos", category: "gastronomia", lat: 20.139, lng: -98.674, rating: 4.5, description: "Pastes artesanales con recetas originales desde 1940." },
+  { id: "6", name: "Hotel Real del Monte", category: "hospedaje", lat: 20.141, lng: -98.675, rating: 4.3, description: "Hospedaje colonial con vista a las montañas." },
+  { id: "7", name: "Peña del Cuervo", category: "aventura", lat: 20.135, lng: -98.668, rating: 4.8, description: "Mirador natural con senderos de montaña espectaculares." },
+  { id: "8", name: "Iglesia de la Asunción", category: "cultura", lat: 20.14, lng: -98.671, rating: 4.6, description: "Templo del siglo XVIII, centro espiritual del pueblo." },
+  { id: "9", name: "Centro Cultural Nicolás Zavala", category: "cultura", lat: 20.138, lng: -98.672, rating: 4.4, description: "Galería de arte y espacio cultural comunitario." },
+  { id: "10", name: "Sendero de las Minas", category: "aventura", lat: 20.136, lng: -98.669, rating: 4.7, description: "Recorrido por antiguas minas con guías locales." },
+  { id: "11", name: "Plaza Principal", category: "cultura", lat: 20.1386, lng: -98.6707, rating: 4.5, description: "Nodo urbano para eventos, comercio local y vida comunitaria." },
+  { id: "12", name: "Museo de Sitio Mina de Acosta", category: "historia", lat: 20.1396, lng: -98.6761, rating: 4.7, description: "Recorrido patrimonial por maquinaria minera y archivo técnico." },
+  { id: "13", name: "Restaurante La Estación", category: "gastronomia", lat: 20.1377, lng: -98.6715, rating: 4.4, description: "Cocina regional con menú de temporada y fogón tradicional." },
+  { id: "14", name: "Cabaña del Bosque", category: "hospedaje", lat: 20.1431, lng: -98.6784, rating: 4.6, description: "Refugio de montaña con vistas al corredor forestal." },
+  { id: "15", name: "Cascada de la Sierra", category: "aventura", lat: 20.1324, lng: -98.6642, rating: 4.9, description: "Ruta eco-aventura con sendero interpretativo y mirador natural." },
   {
     id: "1",
     name: "Mina de Acosta",

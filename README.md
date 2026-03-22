@@ -1,6 +1,6 @@
-# RDM Smart City OS
+# RDM Digital OS v4.1
 
-Plataforma digital turística para **Real del Monte, Hidalgo** con enfoque en narrativa cultural, exploración de lugares, telemetría operativa y módulos de inteligencia territorial en tiempo real.
+Sistema operativo territorial soberano para **Real del Monte, Hidalgo**: una plataforma inmersiva de turismo inteligente que conecta patrimonio, mapa interactivo de 15 lugares, archivo cultural, economía local y asistencia AI contextual en tiempo real.
 
 ---
 

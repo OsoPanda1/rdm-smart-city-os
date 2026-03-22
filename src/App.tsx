@@ -57,6 +57,13 @@ const App = () => {
           <Route path="/historia" element={<Historia />} />
           <Route path="/lugares" element={<Lugares />} />
           <Route path="/mapa" element={<Mapa />} />
+          <Route path="/explorar" element={<Mapa />} />
+          <Route path="/experiencias" element={<Rutas />} />
+          <Route path="/patrimonio" element={<Cultura />} />
+          <Route path="/sabores" element={<Gastronomia />} />
+          <Route path="/economia" element={<NegociosPortal />} />
+          <Route path="/planificador" element={<Rutas />} />
+          <Route path="/realito" element={<Dashboard />} />
           <Route path="/negocios-portal" element={<NegociosPortal />} />
           <Route path="/reglamento" element={<Reglamento />} />
           <Route path="/relatos" element={<Relatos />} />
