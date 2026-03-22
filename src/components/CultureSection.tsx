@@ -67,10 +67,15 @@ export function CultureSection() {
           viewport={{ once: true }}
           className="mt-16 text-center max-w-2xl mx-auto"
         >
-          <p className="text-lg text-foreground/70 font-body leading-relaxed italic font-display">
+          <p className="text-lg text-foreground/70 font-body leading-relaxed italic font-display mb-4">
             "Real del Monte es Pueblo Mágico por derecho propio. Su mezcla de herencia
             británica y raíces mexicanas crea algo irrepetible — cada calle empedrada,
             cada fachada colorida, cada tradición preservada es un acto de resistencia cultural."
+          </p>
+          <p className="text-sm text-foreground/70 font-body leading-relaxed">
+            Desde el Panteón Inglés hasta los talleres locales, la experiencia cultural se vive
+            en capas: arquitectura, memoria obrera, cocina migrante, relatos comunitarios y
+            festividades que transforman al visitante en testigo de una identidad profundamente viva.
           </p>
         </motion.div>
       </div>

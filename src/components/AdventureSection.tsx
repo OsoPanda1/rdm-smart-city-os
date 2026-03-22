@@ -93,10 +93,15 @@ export function AdventureSection() {
 
           {/* Trails */}
           <div className="lg:col-span-2 flex flex-col justify-center">
-            <p className="text-foreground/70 font-body text-lg leading-relaxed mb-10">
+            <p className="text-foreground/70 font-body text-lg leading-relaxed mb-4">
               A 2,700 metros sobre el nivel del mar, cada paso es una conquista.
               La bruma de la Sierra de Pachuca te envuelve como un abrazo ancestral
               mientras descubres senderos que conectan con siglos de historia.
+            </p>
+            <p className="text-foreground/70 font-body text-base leading-relaxed mb-10">
+              Esta vertical combina aventura ligera, interpretación ambiental y paradas narrativas:
+              miradores para fotografía romántica, rutas con memoria minera y travesías de baja
+              complejidad pensadas para visitantes que quieren emoción sin perder seguridad.
             </p>
 
             <div className="space-y-4">
