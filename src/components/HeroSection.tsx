@@ -2,7 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ChevronDown, MapPin, Mountain } from "lucide-react";
 import heroAerial from "@/assets/hero-aerial.jpg";
-import mistyMountains from "@/assets/misty-mountains.jpg";
+import cinematicHero from "@/assets/rdm-hero-cinematic.png";
+import bandcampHeader from "@/assets/rdm-header-bandcamp.jpg";
 
 export function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
