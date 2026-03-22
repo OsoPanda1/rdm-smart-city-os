@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { id: "aventura", label: "Aventura" },
   { id: "hospedaje", label: "Hospedaje" },
   { id: "cultura", label: "Cultura" },
+  { id: "innovacion", label: "Innovación" },
 ];
 
 interface FloatingNavProps {

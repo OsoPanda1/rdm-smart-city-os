@@ -15,6 +15,7 @@ import { DichosSection } from "@/components/DichosSection";
 import { TerritorialMap } from "@/components/TerritorialMap";
 import { InteractiveMap } from "@/components/InteractiveMap";
 import { ReviewPrompt } from "@/components/ReviewPrompt";
+import { TourismInnovationSection } from "@/components/TourismInnovationSection";
 
 const Index = () => {
   const [introComplete, setIntroComplete] = useState(false);
@@ -46,6 +47,7 @@ const Index = () => {
           <AdventureSection />
           <AccommodationSection />
           <CultureSection />
+          <TourismInnovationSection />
           <InteractiveMap />
           <TerritorialMap />
           <ReviewPrompt />

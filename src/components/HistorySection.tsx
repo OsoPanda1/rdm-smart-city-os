@@ -1,37 +1,50 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import mineEntrance from "@/assets/mine-entrance.jpg";
 import panteonIngles from "@/assets/panteon-ingles.jpg";
 import miningEquipment from "@/assets/mining-equipment.jpg";
 import mineTunnel from "@/assets/mine-tunnel.jpg";
+import { ElegantPagination } from "@/components/ElegantPagination";
 
 const TIMELINE = [
-  { year: "1521", event: "Los españoles descubren las vetas de plata en la Sierra de Pachuca." },
-  { year: "1739", event: "José Alejandro Bustamante funda Real del Monte como pueblo minero." },
-  { year: "1824", event: "Llegan los mineros cornish de Inglaterra, trayendo pastes, fútbol y nuevas técnicas." },
-  { year: "1872", event: "Primera huelga minera de América Latina. Los trabajadores exigen derechos." },
-  { year: "2004", event: "Real del Monte es declarado Pueblo Mágico por su riqueza cultural." },
+  { year: "Siglo XVI", event: "Comienza la explotación de vetas argentíferas en la región de Pachuca-Real del Monte." },
+  { year: "1766", event: "Se registra una de las huelgas mineras más tempranas del continente en Real del Monte." },
+  { year: "1824", event: "Llegan mineros de Cornwall y se consolida el intercambio tecnológico y cultural con Hidalgo." },
+  { year: "S. XIX", event: "Se populariza el paste como alimento minero práctico y luego como identidad gastronómica local." },
+  { year: "1906", event: "Declive de ciclos mineros tradicionales y transición paulatina hacia nueva economía regional." },
+  { year: "2004", event: "Mineral del Monte es reconocido como Pueblo Mágico por su patrimonio histórico y turístico." },
+  { year: "2017", event: "La Comarca Minera se integra al programa de Geoparques Mundiales de UNESCO." },
+  { year: "Hoy", event: "El destino fusiona patrimonio industrial, turismo cultural, aventura de montaña y escapadas románticas." },
 ];
+
+const PAGE_SIZE = 4;
 
 export function HistorySection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const containerRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(0);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
   const imgY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
+  const totalPages = Math.ceil(TIMELINE.length / PAGE_SIZE);
+  const pageItems = useMemo(
+    () => TIMELINE.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE),
+    [page],
+  );
+
   return (
     <section id="historia" ref={containerRef} className="relative">
-      {/* Full bleed image */}
       <div className="relative h-[70vh] overflow-hidden">
         <motion.img
           style={{ y: imgY }}
           src={mineEntrance}
           alt="Mina de Acosta"
-          className="absolute inset-0 w-full h-[120%] object-cover"
+          className="absolute inset-0 h-[120%] w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
@@ -43,10 +56,8 @@ export function HistorySection() {
             transition={{ duration: 0.8 }}
             ref={ref}
           >
-            <p className="text-sm tracking-[0.3em] uppercase text-accent font-body mb-4">
-              ⛏️ Patrimonio Minero
-            </p>
-            <h2 className="text-4xl md:text-7xl font-display font-bold leading-[0.9]">
+            <p className="mb-4 font-body text-sm uppercase tracking-[0.3em] text-accent">⛏️ Patrimonio Minero</p>
+            <h2 className="font-display text-4xl font-bold leading-[0.9] md:text-7xl">
               Bajo estas montañas,
               <br />
               <span className="text-accent">imperios</span> nacieron
@@ -55,67 +66,70 @@ export function HistorySection() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="px-6 md:px-16 lg:px-24 py-20 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left: Image mosaic */}
+      <div className="mx-auto max-w-7xl px-6 py-20 md:px-16 lg:px-24">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
           <div className="grid grid-cols-2 gap-3">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="col-span-2 rounded-2xl overflow-hidden h-[280px]"
+              className="col-span-2 h-[280px] overflow-hidden rounded-2xl"
             >
-              <img src={mineTunnel} alt="Túnel de mina" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src={mineTunnel} alt="Túnel de mina" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="rounded-2xl overflow-hidden h-[200px]"
+              className="h-[200px] overflow-hidden rounded-2xl"
             >
-              <img src={panteonIngles} alt="Panteón Inglés" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src={panteonIngles} alt="Panteón Inglés" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="rounded-2xl overflow-hidden h-[200px]"
+              className="h-[200px] overflow-hidden rounded-2xl"
             >
-              <img src={miningEquipment} alt="Equipo minero" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src={miningEquipment} alt="Equipo minero" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
             </motion.div>
           </div>
 
-          {/* Right: Timeline */}
           <div className="flex flex-col justify-center">
-            <p className="text-foreground/70 font-body text-lg leading-relaxed mb-10">
-              La historia de Real del Monte es la historia de la ambición humana. Bajo estas montañas,
-              generaciones de mineros —primero indígenas, después españoles, luego ingleses— extrajeron
-              la plata que financió revoluciones, construyó catedrales y cambió el destino de naciones enteras.
+            <p className="mb-5 font-body text-lg leading-relaxed text-foreground/70">
+              La historia de Real del Monte no es solo una línea de tiempo: es una red de oficios, migraciones,
+              luchas laborales y tecnología extractiva que transformó a Hidalgo durante siglos.
+            </p>
+            <p className="mb-10 font-body text-base leading-relaxed text-foreground/70">
+              Esta narrativa conecta el origen minero, la huella cornish, la dimensión obrera y la reconversión
+              turística contemporánea para que el visitante entienda por qué el pueblo emociona más cuando se recorre
+              con contexto histórico.
             </p>
 
             <div className="space-y-6">
-              {TIMELINE.map((item, i) => (
+              {pageItems.map((item, i) => (
                 <motion.div
-                  key={item.year}
+                  key={`${item.year}-${item.event}`}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex gap-4 group"
+                  className="group flex gap-4"
                 >
                   <div className="flex flex-col items-center">
-                    <span className="text-lg font-display font-bold text-accent">{item.year}</span>
-                    <div className="flex-1 w-px bg-border mt-2" />
+                    <span className="font-display text-lg font-bold text-accent">{item.year}</span>
+                    <div className="mt-2 w-px flex-1 bg-border" />
                   </div>
-                  <p className="text-sm text-foreground/70 font-body leading-relaxed pt-1 group-hover:text-foreground transition-colors">
+                  <p className="pt-1 font-body text-sm leading-relaxed text-foreground/70 transition-colors group-hover:text-foreground">
                     {item.event}
                   </p>
                 </motion.div>
               ))}
             </div>
+
+            <ElegantPagination page={page} totalPages={totalPages} onChange={setPage} />
           </div>
         </div>
       </div>
