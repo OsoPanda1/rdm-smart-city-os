@@ -4,7 +4,7 @@ import { X, Send, Sparkles, ShieldCheck, Activity } from "lucide-react";
 import { applyDecisionToHeptafederation, getTelemetry, getGlobalHealth } from "@/lib/heptafederation";
 import { useIsabellaSSE } from "@/hooks/useIsabellaSSE";
 import ReactMarkdown from "react-markdown";
-import { federationBus } from "@/lib/tamv-kernel";
+import { useCivicEvent } from "@/hooks/useCivicEvent";
 
 interface Message {
   id: string;
@@ -30,6 +30,7 @@ export function RealitoOrb() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { decision, connectionState } = useIsabellaSSE();
+  const emit = useCivicEvent();
 
   const modules = useMemo(() => applyDecisionToHeptafederation(decision ?? undefined), [decision]);
   const telemetry = getTelemetry(modules);
@@ -88,15 +89,14 @@ export function RealitoOrb() {
           ...prev,
           { id: `a_${Date.now()}`, role: "assistant", content: response },
         ]);
-        await federationBus.publish({
-          id: crypto.randomUUID(),
-          type: "TOURISM_INTERACTION",
+        await emit({
+          type: "AI_INTERACTION",
           federation: "MDD_TAMV",
           payload: {
+            text: userMsg.content,
             intent: data.intent ?? "CHARLA_GENERAL",
             sentiment: data.sentiment ?? "neutral",
           },
-          occurredAt: new Date().toISOString(),
           source: "WEB_PORTAL",
           correlationId: decision?.traceId,
         });
@@ -111,30 +111,24 @@ export function RealitoOrb() {
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
+      const assistantId = `a_${Date.now()}`;
+
+      setMessages((prev) => [
+        ...prev,
+        { id: assistantId, role: "assistant", content: "" },
+      ]);
 
       const upsert = (chunk: string) => {
         assistantContent += chunk;
         setMessages((prev) => {
           const last = prev[prev.length - 1];
-          if (last?.role === "assistant" && last.id !== "welcome") {
-            return prev.map((m, i) =>
-              i === prev.length - 1
-                ? { ...m, content: assistantContent }
-                : m,
-            );
-          }
-          return [
-            ...prev,
-            {
-              id: `a_${Date.now()}`,
-              role: "assistant",
-              content: assistantContent,
-            },
-          ];
+          if (last?.id !== assistantId) return prev;
+          return [...prev.slice(0, -1), { ...last, content: assistantContent }];
         });
       };
 
-      while (true) {
+      let streamEnded = false;
+      while (!streamEnded) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
@@ -147,6 +141,15 @@ export function RealitoOrb() {
           if (!line.startsWith("data: ")) continue;
           const json = line.slice(6).trim();
           if (json === "[DONE]") break;
+
+          if (!line.startsWith("data:")) continue;
+          const json = line.slice(5).trim();
+          if (!json) continue;
+          if (json === "[DONE]") {
+            streamEnded = true;
+            break;
+          }
+
           try {
             const parsed = JSON.parse(json);
             const content = parsed.choices?.[0]?.delta?.content;
@@ -154,9 +157,22 @@ export function RealitoOrb() {
           } catch {
             buffer = line + "\n" + buffer;
             break;
+            continue;
           }
         }
       }
+
+      await emit({
+        type: "AI_INTERACTION",
+        federation: "MDD_TAMV",
+        payload: {
+          text: userMsg.content,
+          intent: "CHAT_STREAM",
+          response: assistantContent,
+        },
+        source: "WEB_PORTAL",
+        correlationId: decision?.traceId,
+      });
     } catch (e) {
       console.error("Realito error:", e);
       setMessages((prev) => [

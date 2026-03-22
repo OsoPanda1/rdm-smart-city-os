@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { useIsabellaSSE } from "@/hooks/useIsabellaSSE";
 import { REAL_DEL_MONTE_SITES } from "@/lib/kernel";
 import { fastDistance } from "@/core/geo/haversine.fast";
+import { useCivicEvent } from "@/hooks/useCivicEvent";
 
 export function TerritorialMap() {
   const { decision, connectionState } = useIsabellaSSE();
+  const emit = useCivicEvent();
 
   const highlightedSiteId = useMemo(() => {
     if (!decision) return null;
@@ -30,7 +32,19 @@ export function TerritorialMap() {
             return (
               <article
                 key={site.id}
-                className={`rounded-xl border p-3 transition ${isFocused ? "border-accent shadow-[0_0_0_2px_hsl(var(--accent)/0.35)]" : "border-border/50"}`}
+                className={`rounded-xl border p-3 transition cursor-pointer ${isFocused ? "border-accent shadow-[0_0_0_2px_hsl(var(--accent)/0.35)]" : "border-border/50"}`}
+                onClick={() =>
+                  void emit({
+                    type: "TOURISM_INTERACTION",
+                    federation: "DEKATEOTL",
+                    payload: {
+                      id: site.id,
+                      name: site.name,
+                      category: site.category,
+                    },
+                    source: "WEB_PORTAL",
+                  })
+                }
               >
                 <p className="text-sm font-medium">{site.name}</p>
                 <p className="text-xs text-muted-foreground">{site.category}</p>
