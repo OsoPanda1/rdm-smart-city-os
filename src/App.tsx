@@ -25,6 +25,11 @@ import NegociosPortal from "./pages/NegociosPortal.tsx";
 import Reglamento from "./pages/Reglamento.tsx";
 import Relatos from "./pages/Relatos.tsx";
 import Rutas from "./pages/Rutas.tsx";
+import Comercios from "./pages/Comercios.tsx";
+import Paquetes from "./pages/Paquetes.tsx";
+import ComunidadPage from "./pages/ComunidadPage.tsx";
+import TransporteLocal from "./pages/TransporteLocal.tsx";
+import ShuttleCDMX from "./pages/ShuttleCDMX.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -43,11 +48,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/apoya" element={<Apoya />} />
           <Route path="/arte" element={<Arte />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/comunidad" element={<Comunidad />} />
+          <Route path="/comunidad" element={<ComunidadPage />} />
           <Route path="/cultura" element={<Cultura />} />
           <Route path="/dichos" element={<Dichos />} />
           <Route path="/directorio" element={<Directorio />} />
@@ -65,10 +71,13 @@ const App = () => {
           <Route path="/planificador" element={<Rutas />} />
           <Route path="/realito" element={<Dashboard />} />
           <Route path="/negocios-portal" element={<NegociosPortal />} />
+          <Route path="/comercios" element={<Comercios />} />
+          <Route path="/paquetes" element={<Paquetes />} />
+          <Route path="/transporte-local" element={<TransporteLocal />} />
+          <Route path="/shuttle-cdmx-rdm" element={<ShuttleCDMX />} />
           <Route path="/reglamento" element={<Reglamento />} />
           <Route path="/relatos" element={<Relatos />} />
           <Route path="/rutas" element={<Rutas />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

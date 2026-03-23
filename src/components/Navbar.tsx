@@ -5,11 +5,13 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { to: "/", label: "Inicio" },
-  { to: "/catalogo", label: "Catálogo" },
-  { to: "/mapa", label: "Mapa" },
-  { to: "/eventos", label: "Eventos" },
-  { to: "/directorio", label: "Directorio" },
-  { to: "/apoya", label: "Apoya" },
+  { to: "/explorar", label: "Explorar" },
+  { to: "/dichos", label: "Dichos" },
+  { to: "/comercios", label: "Comercios" },
+  { to: "/paquetes", label: "Paquetes" },
+  { to: "/comunidad", label: "Comunidad" },
+  { to: "/shuttle-cdmx-rdm", label: "Shuttle" },
+  { to: "/transporte-local", label: "Transporte" },
 ];
 
 const Navbar = () => {
@@ -19,20 +21,20 @@ const Navbar = () => {
   const isActiveRoute = (route: string) => location.pathname === route;
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 border-b border-slate-300/70 bg-gradient-to-r from-slate-100 via-slate-50 to-blue-50/95 shadow-[0_10px_35px_-24px_rgba(37,99,235,0.55)] backdrop-blur-xl">
-      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,rgba(148,163,184,0.22),rgba(191,219,254,0.2)_38%,rgba(226,232,240,0.36)_72%,rgba(59,130,246,0.12))]" />
+    <header className="fixed top-0 inset-x-0 z-50 border-b border-border/60 bg-background/90 shadow-[0_10px_35px_-24px_hsl(var(--primary)/0.35)] backdrop-blur-xl">
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,hsl(var(--muted)/0.22),hsl(var(--primary)/0.08)_38%,hsl(var(--background)/0.36)_72%,hsl(var(--accent)/0.06))]" />
 
       <div className="container relative mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase text-slate-800"
+          className="inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase text-foreground"
           onClick={() => setMobileOpen(false)}
         >
-          <Sparkles className="h-4 w-4 text-blue-700" />
-          TAMV Nexus
+          <Sparkles className="h-4 w-4 text-primary" />
+          RDM Digital
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1">
           {links.map((item) => (
             <Link
               key={item.to}
@@ -40,8 +42,8 @@ const Navbar = () => {
               className={cn(
                 "px-3 py-1.5 rounded-full text-sm transition-colors",
                 isActiveRoute(item.to)
-                  ? "bg-gradient-to-r from-slate-800 via-slate-700 to-blue-700 text-slate-50 shadow-sm shadow-blue-900/25"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-gradient-to-r hover:from-slate-300/55 hover:to-blue-200/45",
+                  ? "bg-gradient-to-r from-foreground via-foreground/90 to-primary text-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
               )}
             >
               {item.label}
@@ -51,7 +53,7 @@ const Navbar = () => {
 
         <button
           type="button"
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-400/60 bg-slate-100/80 text-slate-700 hover:text-slate-900 hover:border-blue-400/60 transition-colors"
+          className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/80 text-foreground hover:border-primary/40 transition-colors"
           aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setMobileOpen((prev) => !prev)}
         >
@@ -60,19 +62,19 @@ const Navbar = () => {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-slate-300/80 bg-gradient-to-b from-slate-100/95 to-blue-50/95 px-4 pb-5 pt-3 backdrop-blur-xl">
-          <nav className="flex flex-col gap-1">
+        <div className="lg:hidden border-t border-border/60 bg-background/95 backdrop-blur-xl">
+          <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
             {links.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className={cn(
-                  "rounded-xl px-4 py-2.5 text-sm transition-colors",
-                  isActiveRoute(item.to)
-                    ? "bg-gradient-to-r from-slate-800 via-slate-700 to-blue-700 text-slate-50"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60",
-                )}
                 onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "px-4 py-2.5 rounded-xl text-sm transition-colors",
+                  isActiveRoute(item.to)
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/30",
+                )}
               >
                 {item.label}
               </Link>
