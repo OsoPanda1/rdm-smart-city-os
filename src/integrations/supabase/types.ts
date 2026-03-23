@@ -14,6 +14,201 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_payments: {
+        Row: {
+          business_id: string
+          created_at: string
+          current_period_end: string | null
+          id: string
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_payments_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      businesses: {
+        Row: {
+          address: string | null
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          images: Json | null
+          lat: number | null
+          lng: number | null
+          name: string
+          owner_id: string | null
+          phone: string | null
+          plan: string | null
+          price_range: string | null
+          social_links: Json | null
+          status: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: Json | null
+          lat?: number | null
+          lng?: number | null
+          name: string
+          owner_id?: string | null
+          phone?: string | null
+          plan?: string | null
+          price_range?: string | null
+          social_links?: Json | null
+          status?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: Json | null
+          lat?: number | null
+          lng?: number | null
+          name?: string
+          owner_id?: string | null
+          phone?: string | null
+          plan?: string | null
+          price_range?: string | null
+          social_links?: Json | null
+          status?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      community_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_posts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          images: Json | null
+          location: string | null
+          status: string | null
+          title: string | null
+          type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          images?: Json | null
+          location?: string | null
+          status?: string | null
+          title?: string | null
+          type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          images?: Json | null
+          location?: string | null
+          status?: string | null
+          title?: string | null
+          type?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       dichos: {
         Row: {
           categoria: string
@@ -74,6 +269,120 @@ export type Database = {
         }
         Relationships: []
       }
+      package_businesses: {
+        Row: {
+          business_id: string
+          id: string
+          package_id: string
+        }
+        Insert: {
+          business_id: string
+          id?: string
+          package_id: string
+        }
+        Update: {
+          business_id?: string
+          id?: string
+          package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_businesses_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_businesses_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      package_places: {
+        Row: {
+          id: string
+          order_index: number | null
+          package_id: string
+          place_id: string
+        }
+        Insert: {
+          id?: string
+          order_index?: number | null
+          package_id: string
+          place_id: string
+        }
+        Update: {
+          id?: string
+          order_index?: number | null
+          package_id?: string
+          place_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_places_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_places_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      packages: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_hours: number | null
+          hero_image: string | null
+          id: string
+          includes: Json | null
+          intensity: string | null
+          name: string
+          price_from: number | null
+          slug: string
+          status: string | null
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_hours?: number | null
+          hero_image?: string | null
+          id?: string
+          includes?: Json | null
+          intensity?: string | null
+          name: string
+          price_from?: number | null
+          slug: string
+          status?: string | null
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_hours?: number | null
+          hero_image?: string | null
+          id?: string
+          includes?: Json | null
+          intensity?: string | null
+          name?: string
+          price_from?: number | null
+          slug?: string
+          status?: string | null
+          type?: string | null
+        }
+        Relationships: []
+      }
       places: {
         Row: {
           category: string
@@ -109,6 +418,298 @@ export type Database = {
           rating?: number | null
         }
         Relationships: []
+      }
+      ratings_businesses: {
+        Row: {
+          business_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          score: number
+          user_id: string | null
+        }
+        Insert: {
+          business_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          score: number
+          user_id?: string | null
+        }
+        Update: {
+          business_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          score?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_businesses_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ratings_places: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          place_id: string
+          score: number
+          user_id: string | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          place_id: string
+          score: number
+          user_id?: string | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          place_id?: string
+          score?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_places_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shuttle_bookings: {
+        Row: {
+          booking_status: string | null
+          created_at: string
+          id: string
+          passengers: number | null
+          payment_status: string | null
+          route_id: string
+          total_amount: number | null
+          travel_date: string
+          user_id: string | null
+        }
+        Insert: {
+          booking_status?: string | null
+          created_at?: string
+          id?: string
+          passengers?: number | null
+          payment_status?: string | null
+          route_id: string
+          total_amount?: number | null
+          travel_date: string
+          user_id?: string | null
+        }
+        Update: {
+          booking_status?: string | null
+          created_at?: string
+          id?: string
+          passengers?: number | null
+          payment_status?: string | null
+          route_id?: string
+          total_amount?: number | null
+          travel_date?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shuttle_bookings_route_id_fkey"
+            columns: ["route_id"]
+            isOneToOne: false
+            referencedRelation: "shuttle_routes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shuttle_companies: {
+        Row: {
+          contact_email: string | null
+          created_at: string
+          id: string
+          logo: string | null
+          monthly_plan: string | null
+          name: string
+          owner_id: string | null
+          phone: string | null
+          rfc: string | null
+          status: string | null
+          website: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          logo?: string | null
+          monthly_plan?: string | null
+          name: string
+          owner_id?: string | null
+          phone?: string | null
+          rfc?: string | null
+          status?: string | null
+          website?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          logo?: string | null
+          monthly_plan?: string | null
+          name?: string
+          owner_id?: string | null
+          phone?: string | null
+          rfc?: string | null
+          status?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      shuttle_routes: {
+        Row: {
+          capacity: number | null
+          company_id: string
+          created_at: string
+          days_of_week: Json | null
+          departure_time: string | null
+          destination: string
+          id: string
+          origin: string
+          pickup_points: Json | null
+          price_per_person: number | null
+          return_time: string | null
+          status: string | null
+        }
+        Insert: {
+          capacity?: number | null
+          company_id: string
+          created_at?: string
+          days_of_week?: Json | null
+          departure_time?: string | null
+          destination?: string
+          id?: string
+          origin?: string
+          pickup_points?: Json | null
+          price_per_person?: number | null
+          return_time?: string | null
+          status?: string | null
+        }
+        Update: {
+          capacity?: number | null
+          company_id?: string
+          created_at?: string
+          days_of_week?: Json | null
+          departure_time?: string | null
+          destination?: string
+          id?: string
+          origin?: string
+          pickup_points?: Json | null
+          price_per_person?: number | null
+          return_time?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shuttle_routes_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "shuttle_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transport_providers: {
+        Row: {
+          capacity: number | null
+          created_at: string
+          id: string
+          name: string
+          owner_id: string | null
+          phone: string | null
+          plate: string | null
+          service_area: string | null
+          status: string | null
+          type: string
+        }
+        Insert: {
+          capacity?: number | null
+          created_at?: string
+          id?: string
+          name: string
+          owner_id?: string | null
+          phone?: string | null
+          plate?: string | null
+          service_area?: string | null
+          status?: string | null
+          type?: string
+        }
+        Update: {
+          capacity?: number | null
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string | null
+          phone?: string | null
+          plate?: string | null
+          service_area?: string | null
+          status?: string | null
+          type?: string
+        }
+        Relationships: []
+      }
+      transport_requests: {
+        Row: {
+          created_at: string
+          dropoff_location: string
+          id: string
+          pickup_lat: number | null
+          pickup_lng: number | null
+          pickup_location: string
+          provider_id: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          dropoff_location: string
+          id?: string
+          pickup_lat?: number | null
+          pickup_lng?: number | null
+          pickup_location: string
+          provider_id?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          dropoff_location?: string
+          id?: string
+          pickup_lat?: number | null
+          pickup_lng?: number | null
+          pickup_location?: string
+          provider_id?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transport_requests_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "transport_providers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
