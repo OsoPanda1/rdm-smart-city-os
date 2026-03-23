@@ -13,7 +13,8 @@ export type CivicEventType =
   | "PAYMENT_COMPLETED"
   | "ALERT_SECURITY"
   | "CITY_FEEDBACK"
-  | "SYSTEM_METRIC";
+  | "SYSTEM_METRIC"
+  | "AI_INTERACTION";
 
 export interface CivicEvent<TPayload = unknown> {
   id: string;

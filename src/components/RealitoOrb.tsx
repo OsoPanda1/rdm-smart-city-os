@@ -138,26 +138,20 @@ export function RealitoOrb() {
           let line = buffer.slice(0, idx);
           buffer = buffer.slice(idx + 1);
           if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (!line.startsWith("data: ")) continue;
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") break;
-
           if (!line.startsWith("data:")) continue;
-          const json = line.slice(5).trim();
-          if (!json) continue;
-          if (json === "[DONE]") {
+          const jsonStr = line.slice(line.startsWith("data: ") ? 6 : 5).trim();
+          if (!jsonStr) continue;
+          if (jsonStr === "[DONE]") {
             streamEnded = true;
             break;
           }
-
           try {
-            const parsed = JSON.parse(json);
+            const parsed = JSON.parse(jsonStr);
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) upsert(content);
           } catch {
             buffer = line + "\n" + buffer;
             break;
-            continue;
           }
         }
       }
