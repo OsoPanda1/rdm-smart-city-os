@@ -4,7 +4,7 @@ import { Heart, MessageCircle, PenSquare, Image as ImageIcon } from "lucide-reac
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import ModuleCinematicIntro from "@/components/ModuleCinematicIntro";
+import { ModuleCinematicIntro } from "@/components/ModuleCinematicIntro";
 import { PostCard } from "@/components/community/PostCard";
 import { ElegantPagination } from "@/components/ElegantPagination";
 import { Button } from "@/components/ui/button";
@@ -66,7 +66,7 @@ export default function ComunidadPage() {
     return (
       <ModuleCinematicIntro
         title="Comunidad RDM"
-        subtitle="Voz del Pueblo"
+        eyebrow="Voz del Pueblo"
         description="Historias, experiencias y conexiones entre visitantes y locales de Real del Monte"
         onComplete={() => setShowIntro(false)}
       />

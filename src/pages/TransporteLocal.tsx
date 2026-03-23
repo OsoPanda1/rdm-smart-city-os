@@ -4,7 +4,7 @@ import { Car, MapPin, Plus } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import ModuleCinematicIntro from "@/components/ModuleCinematicIntro";
+import { ModuleCinematicIntro } from "@/components/ModuleCinematicIntro";
 import { TransportCard } from "@/components/transport/TransportCard";
 import { ElegantPagination } from "@/components/ElegantPagination";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,7 +31,7 @@ export default function TransporteLocal() {
     return (
       <ModuleCinematicIntro
         title="Transporte Local"
-        subtitle="Movilidad en RDM"
+        eyebrow="Movilidad en RDM"
         description="Taxis, urbans y servicios de transporte dentro de Real del Monte y alrededores"
         onComplete={() => setShowIntro(false)}
       />

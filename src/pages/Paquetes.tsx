@@ -4,7 +4,7 @@ import { Compass, Clock, Zap } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import ModuleCinematicIntro from "@/components/ModuleCinematicIntro";
+import { ModuleCinematicIntro } from "@/components/ModuleCinematicIntro";
 import { PackageCard } from "@/components/packages/PackageCard";
 import { ElegantPagination } from "@/components/ElegantPagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -43,7 +43,7 @@ export default function Paquetes() {
     return (
       <ModuleCinematicIntro
         title="Paquetes de Visita"
-        subtitle="Experiencias Curadas"
+        eyebrow="Experiencias Curadas"
         description="Itinerarios diseñados para cada tipo de viajero. Aventura, romance, cultura o gastronomía."
         onComplete={() => setShowIntro(false)}
       />

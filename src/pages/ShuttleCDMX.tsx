@@ -4,7 +4,7 @@ import { Bus, Search, Calendar, Users } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import ModuleCinematicIntro from "@/components/ModuleCinematicIntro";
+import { ModuleCinematicIntro } from "@/components/ModuleCinematicIntro";
 import { ShuttleRouteCard } from "@/components/transport/ShuttleRouteCard";
 import { ElegantPagination } from "@/components/ElegantPagination";
 import { Input } from "@/components/ui/input";
@@ -46,7 +46,7 @@ export default function ShuttleCDMX() {
     return (
       <ModuleCinematicIntro
         title="Shuttle CDMX ↔ RDM"
-        subtitle="Conexión Directa"
+        eyebrow="Conexión Directa"
         description="Viaja cómodo entre la Ciudad de México y Real del Monte con servicios de shuttle verificados"
         onComplete={() => setShowIntro(false)}
       />

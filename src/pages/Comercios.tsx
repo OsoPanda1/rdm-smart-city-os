@@ -4,7 +4,7 @@ import { Search, Filter, Store } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import ModuleCinematicIntro from "@/components/ModuleCinematicIntro";
+import { ModuleCinematicIntro } from "@/components/ModuleCinematicIntro";
 import { BusinessCard } from "@/components/business/BusinessCard";
 import { ElegantPagination } from "@/components/ElegantPagination";
 import { Input } from "@/components/ui/input";
@@ -55,7 +55,7 @@ export default function Comercios() {
     return (
       <ModuleCinematicIntro
         title="Directorio Comercial"
-        subtitle="Real del Monte"
+        eyebrow="Real del Monte"
         description="Descubre los comercios, restaurantes y artesanos que dan vida a nuestro Pueblo Mágico"
         onComplete={() => setShowIntro(false)}
       />
