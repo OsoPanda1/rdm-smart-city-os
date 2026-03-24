@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { MovementFilter } from "@/core/behavior/movement.filter";
 import { detectMovementPattern } from "@/core/behavior/pattern.detector";
 import { endManualSpan, setSpanAttribute, startManualSpan } from "@/instrumentation.node";
@@ -137,6 +138,21 @@ export class ExperienceOrchestrator {
               : "Te guiamos por una salida segura y cultural",
         ruta_ar_activada: true,
       },
+      explainability: {
+        ruleVersion: "isabella-territorial-v2",
+        deterministicSeed: this.buildDeterministicSeed(t, dist, speed),
+        factors: [
+          { name: "distanceToExit", value: dist, rationale: "Menor distancia incrementa urgencia de retención." },
+          { name: "stayTimeHours", value: t.stayTimeHours, rationale: "Mayor estancia habilita experiencias de descubrimiento." },
+          { name: "inactivityMinutes", value: inactivity, rationale: "Inactividad prolongada indica riesgo de abandono." },
+          { name: "speedMps", value: speed, rationale: "Patrones de velocidad ayudan a detectar intención de salida." },
+        ],
+        notes: [
+          `pattern=${pattern}`,
+          `threshold=${this.threshold}`,
+          `totalScore=${score.total.toFixed(2)}`,
+        ],
+      },
       score,
     };
 
@@ -154,6 +170,21 @@ export class ExperienceOrchestrator {
     endManualSpan(span);
 
     return decision;
+  }
+
+  private buildDeterministicSeed(t: TuristaEstado, dist: number, speed: number): string {
+    const raw = [
+      t.id,
+      t.territory ?? "RDM",
+      t.coords.lat.toFixed(5),
+      t.coords.lng.toFixed(5),
+      dist.toFixed(2),
+      speed.toFixed(3),
+      t.stayTimeHours.toFixed(2),
+      t.activityTimestamps.lastInteractionAt.toISOString(),
+    ].join("|");
+
+    return createHash("sha256").update(raw).digest("hex").slice(0, 16);
   }
 
   private resolveIntent(totalScore: number, pattern: string): RetentionIntent {
