@@ -105,7 +105,7 @@ Su objetivo es pasar de una app informativa a un **sistema operable en producci�
 - Rutas internas tipo API en `src/app/api/*` (métricas, stream, feedback).
 - Integración Supabase (cliente y edge functions).
 
----
+### Tipos de eventos canónicos
 
 ## 5) Estado actual de avance a producción (estimado)
 
@@ -126,7 +126,7 @@ Su objetivo es pasar de una app informativa a un **sistema operable en producci�
 **73% listo para producción controlada** (piloto real con SLOs y guardrails),
 **no 100% listo para escala masiva regulada** sin hardening adicional de seguridad, DR, QA y compliance.
 
----
+### Índice global de readiness
 
 ## 6) Despliegue y operación
 
