@@ -96,6 +96,9 @@ En muchos destinos turísticos, la información está fragmentada y no existe un
 
 - `src/lib/kernel.ts`: motor de recomendaciones y narrativa.
 - `src/lib/heptafederation.ts`: modelo heptafederado (telemetría/health/score).
+- `src/lib/sovereign-operating-system.ts`: Kernel Isabella, estatuto de dignidad, federaciones y protocolo TIME UP.
+- `docs/architecture/sistema-operativo-soberano-tamv.md`: archivo maestro unificado (Partes 1-3).
+- `data/seeds/sovereign-ledger.sql`: estructura base de Sovereign Ledger y vista de integridad de identidad.
 - `src/core/*` + `src/orchestrator/*`: motor territorial GEN-7+.
 
 ---
