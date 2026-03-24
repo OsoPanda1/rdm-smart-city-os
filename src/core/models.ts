@@ -22,6 +22,19 @@ export interface ScoreBreakdown {
   factors: Record<string, number>;
 }
 
+
+export interface ExplainabilityLog {
+  ruleVersion: string;
+  deterministicSeed: string;
+  factors: Array<{
+    name: string;
+    value: number;
+    weight?: number;
+    rationale: string;
+  }>;
+  notes: string[];
+}
+
 export interface IsabellaDecision {
   traceId: string;
   territory: string;
@@ -37,7 +50,9 @@ export interface IsabellaDecision {
     mensaje: string;
     ruta_ar_activada: boolean;
   };
+  explainability?: ExplainabilityLog;
 }
+
 
 // backward-compatible alias for existing imports
 export type Decision = IsabellaDecision;
