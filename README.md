@@ -90,6 +90,7 @@ Su objetivo es pasar de una app informativa a un **sistema operable en producci�
   - scoring territorial con contexto geoespacial.
   - emisión de decisiones con `traceId`.
   - explainability estructurada (`ruleVersion`, factores, notas) + seed determinista.
+  - barrera de seguridad anti-abuso: validación de coordenadas, riesgo acumulado y bloqueo defensivo (`isabella:security-blocked`).
 - `src/orchestrator/decision.store.ts`
   - ledger de decisiones versionado con hash de auditoría.
   - consultas de trazabilidad por `traceId`.
@@ -195,6 +196,7 @@ npm run build
 3. Habilitar observabilidad y alertas de latencia/eventos.
 4. Mantener `TAMV_EVENT_STORE_AUTO_MIGRATE=false` y `CATTLEYA_PAY_AUTO_MIGRATE=false` en producción para evitar DDL runtime.
 5. Activar auto-migración solo en entorno local/dev si se necesita bootstrap rápido.
+6. Programar respaldo antifrágil de ledgers críticos con `scripts/backup-critical-ledgers.sh`.
 
 
 ### Infra disponible en repo

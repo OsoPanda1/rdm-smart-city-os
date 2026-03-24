@@ -41,6 +41,7 @@ export class ExperienceOrchestrator {
   private proximityBBoxMeters: number;
   private threshold: number;
   private lastDecisionAt = new Map<string, number>();
+  private suspiciousRiskByTourist = new Map<string, number>();
   private exitIndex = new LinearSpatialIndex();
 
   constructor(
@@ -68,6 +69,24 @@ export class ExperienceOrchestrator {
     isabellaMovementFilterAlpha.set(this.movement.getAlpha());
   }
 
+
+  private hasValidCoordinates(t: TuristaEstado): boolean {
+    return Number.isFinite(t.coords.lat)
+      && Number.isFinite(t.coords.lng)
+      && t.coords.lat >= -90
+      && t.coords.lat <= 90
+      && t.coords.lng >= -180
+      && t.coords.lng <= 180;
+  }
+
+  private updateSecurityRisk(touristId: string, speedMps: number): number {
+    const prev = this.suspiciousRiskByTourist.get(touristId) ?? 0;
+    const surge = speedMps > 15 ? 20 : speedMps > 8 ? 10 : -4;
+    const next = Math.max(0, Math.min(100, prev + surge));
+    this.suspiciousRiskByTourist.set(touristId, next);
+    return next;
+  }
+
   allowExecution(touristId: string, windowMs = this.throttleMs): boolean {
     const now = this.clock.now();
     const previous = this.lastDecisionAt.get(touristId);
@@ -78,6 +97,10 @@ export class ExperienceOrchestrator {
   evaluar(t: TuristaEstado): IsabellaDecision | null {
     const started = this.clock.now();
     if (!this.allowExecution(t.id, this.throttleMs)) {
+      return null;
+    }
+
+    if (!this.hasValidCoordinates(t)) {
       return null;
     }
 
@@ -101,6 +124,13 @@ export class ExperienceOrchestrator {
 
     const rawSpeed = t.prevCoords ? fastDistance(t.prevCoords, t.coords) / 5 : 0;
     const speed = this.movement.update(rawSpeed);
+
+    const securityRisk = this.updateSecurityRisk(t.id, speed);
+    if (securityRisk >= 80) {
+      this.eventBus.emit("isabella:security-blocked", { traceId, touristId: t.id, securityRisk, coords: t.coords });
+      endManualSpan(span);
+      return null;
+    }
 
     const inactivity = (started - t.activityTimestamps.lastInteractionAt.getTime()) / 60_000;
 
@@ -151,6 +181,7 @@ export class ExperienceOrchestrator {
           `pattern=${pattern}`,
           `threshold=${this.threshold}`,
           `totalScore=${score.total.toFixed(2)}`,
+          `securityRisk=${securityRisk.toFixed(0)}`,
         ],
       },
       score,

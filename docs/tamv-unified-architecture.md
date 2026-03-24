@@ -55,12 +55,14 @@ Este documento consolida la arquitectura objetivo para continuar la unificación
 - **Circuit breaker** en event bus para evitar cascadas durante fallas.
 - **Idempotencia** en eventos y pagos (`event_id`, `operation_id`).
 - **Tolerancia a fallos** con degradación controlada en gateway/orchestrator.
+- **Dead-letter + snapshots** para recuperación ante fallos de publicación y replay acelerado.
 
 ## Telemetría profunda
 
 - **Tracing distribuido** por `traceId`, `correlationId`, `causationId`.
 - **Métricas por dominio**: decisión, geo, economía, experiencia.
 - **Logs estructurados** con contexto de versión de reglas y hash de decisión.
+- **Backups críticos** para `tamv_event_store`, `tamv_event_dead_letter`, `tamv_stream_snapshot`, `cattleya_payment_ledger`.
 
 
 ## Dominio canónico y doctrina federada

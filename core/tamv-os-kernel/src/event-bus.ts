@@ -1,6 +1,6 @@
 import { Kafka, type Producer } from "kafkajs";
 import { randomUUID } from "node:crypto";
-import { appendEvent, type AppendEventOptions, type StoredEvent } from "./event-store";
+import { appendDeadLetter, appendEvent, type AppendEventOptions, type StoredEvent } from "./event-store";
 import type { CivicEvent } from "./types";
 
 let producer: Producer | null = null;
@@ -68,6 +68,15 @@ async function sendWithRetry(event: StoredEvent, retries = 3): Promise<void> {
         if (publishFailures === FAILURE_THRESHOLD) {
           circuitOpenedAt = Date.now();
         }
+
+        await appendDeadLetter({
+          id: event.id,
+          streamId: event.streamId,
+          payload: event,
+          reason: error instanceof Error ? error.message : "Unknown Kafka failure",
+          attempts: attempt,
+        });
+
         throw error;
       }
 
@@ -94,6 +103,7 @@ export async function publishEvent(
     occurredAt: event.occurredAt ?? new Date().toISOString(),
     source: event.source,
     correlationId: event.correlationId,
+    canonical: event.canonical,
   };
 
   const streamId = options.streamId ?? `${enriched.federation}:${enriched.type}`;

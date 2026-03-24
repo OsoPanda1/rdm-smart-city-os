@@ -18,6 +18,24 @@ CREATE TABLE IF NOT EXISTS tamv_event_store (
   UNIQUE(stream_id, stream_version)
 );
 
+CREATE TABLE IF NOT EXISTS tamv_event_dead_letter (
+  id UUID PRIMARY KEY,
+  stream_id TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  attempts INTEGER NOT NULL,
+  payload JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS tamv_stream_snapshot (
+  stream_id TEXT NOT NULL,
+  stream_version INTEGER NOT NULL,
+  state_hash TEXT NOT NULL,
+  state_payload JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY(stream_id, stream_version)
+);
+
 CREATE INDEX IF NOT EXISTS idx_tamv_event_store_stream
   ON tamv_event_store(stream_id, stream_version);
 

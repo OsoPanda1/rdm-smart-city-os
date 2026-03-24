@@ -13,10 +13,23 @@ const pool = new Pool({
 let schemaReady = false;
 const autoMigrate = process.env.CATTLEYA_PAY_AUTO_MIGRATE === "true";
 
+async function assertLedgerExists() {
+  const result = await pool.query<{ ledger: string | null }>(
+    `SELECT to_regclass('public.cattleya_payment_ledger') as ledger`,
+  );
+
+  if (!result.rows[0]?.ledger) {
+    throw new Error(
+      "Cattleya ledger schema is missing. Apply migrations before boot (supabase db push) or set CATTLEYA_PAY_AUTO_MIGRATE=true for local bootstrap.",
+    );
+  }
+}
+
 async function ensurePaymentsSchema() {
   if (schemaReady) return;
 
   if (!autoMigrate) {
+    await assertLedgerExists();
     schemaReady = true;
     return;
   }
@@ -79,13 +92,14 @@ export class PaymentService {
     const amountCents = Math.round(params.amount * 100);
 
     const client = await pool.connect();
+    let currentState: PaymentLifecycleState = "INITIATED";
 
     try {
       await client.query("BEGIN");
 
       const existing = await client.query<{
         stripe_session_id: string | null;
-        status: string;
+        status: PaymentLifecycleState;
       }>(
         `SELECT stripe_session_id, status
          FROM cattleya_payment_ledger
@@ -116,9 +130,10 @@ export class PaymentService {
             JSON.stringify(params.metadata ?? {}),
           ],
         );
+      } else {
+        currentState = existing.rows[0].status;
       }
 
-      const currentState = (existing.rows[0]?.status as PaymentLifecycleState | undefined) ?? "INITIATED";
       const nextState = resolveNextState("PAYMENT_ORDER", "PAYMENT_SESSION_CREATED", currentState);
 
       const session = await withRetry(() =>
@@ -159,7 +174,7 @@ export class PaymentService {
     } catch (error) {
       await client.query("ROLLBACK");
 
-      const failedState = resolveNextState("PAYMENT_ORDER", "PAYMENT_FAILED", "INITIATED");
+      const failedState = resolveNextState("PAYMENT_ORDER", "PAYMENT_FAILED", currentState);
 
       await pool.query(
         `UPDATE cattleya_payment_ledger
