@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto";
 import { Pool, type PoolClient } from "pg";
-import { resolveNextState, type CanonicalEventType } from "./domain/canonical-domain";
 import type { CivicEvent } from "./types";
 
 const pool = new Pool({
@@ -29,23 +28,6 @@ export interface StoredEvent<TPayload = unknown> extends CivicEvent<TPayload> {
 }
 
 let initialized = false;
-
-function assertCanonicalTransition(event: CivicEvent) {
-  if (!event.canonical?.aggregateType || !event.canonical.previousState || !event.canonical.nextState) return;
-
-  const expected = resolveNextState(
-    event.canonical.aggregateType,
-    event.type as CanonicalEventType,
-    event.canonical.previousState,
-  );
-
-  if (expected !== event.canonical.nextState) {
-    throw new Error(
-      `Invalid canonical state progression for ${event.canonical.aggregateType}/${event.canonical.aggregateId}: expected ${expected}, received ${event.canonical.nextState}`
-    );
-  }
-}
-
 
 function hashEventPayload(event: CivicEvent, streamId: string, streamVersion: number): string {
   const raw = JSON.stringify({
@@ -125,8 +107,6 @@ export async function appendEvent(
         `Optimistic concurrency violation in stream ${options.streamId}: expected ${options.expectedVersion}, actual ${streamVersion - 1}`,
       );
     }
-
-    assertCanonicalTransition(event);
 
     const eventHash = hashEventPayload(event, options.streamId, streamVersion);
 

@@ -1,6 +1,5 @@
 import Stripe from "stripe";
 import { Pool } from "pg";
-import { resolveNextState, type PaymentLifecycleState } from "../../../core/tamv-os-kernel/src/domain/canonical-domain";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-10-28.acacia",
@@ -24,7 +23,7 @@ async function ensurePaymentsSchema() {
       currency TEXT NOT NULL,
       description TEXT NOT NULL,
       stripe_session_id TEXT,
-      status TEXT NOT NULL CHECK (status IN ('INITIATED','SESSION_CREATED','AUTHORIZED','CAPTURED','SETTLED','FAILED','REFUNDED')),
+      status TEXT NOT NULL,
       failure_reason TEXT,
       metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -100,7 +99,7 @@ export class PaymentService {
         await client.query(
           `INSERT INTO cattleya_payment_ledger
             (operation_id, user_id, amount_cents, currency, description, status, metadata)
-           VALUES ($1,$2,$3,$4,$5,'INITIATED',$6)`,
+           VALUES ($1,$2,$3,$4,$5,'PENDING',$6)`,
           [
             params.operationId,
             params.userId,
@@ -111,9 +110,6 @@ export class PaymentService {
           ],
         );
       }
-
-      const currentState = (existing.rows[0]?.status as PaymentLifecycleState | undefined) ?? "INITIATED";
-      const nextState = resolveNextState("PAYMENT_ORDER", "PAYMENT_SESSION_CREATED", currentState);
 
       const session = await withRetry(() =>
         stripe.checkout.sessions.create({
@@ -142,10 +138,10 @@ export class PaymentService {
       await client.query(
         `UPDATE cattleya_payment_ledger
          SET stripe_session_id = $2,
-             status = $3,
+             status = 'SESSION_CREATED',
              updated_at = NOW()
          WHERE operation_id = $1`,
-        [params.operationId, session.id, nextState],
+        [params.operationId, session.id],
       );
 
       await client.query("COMMIT");
@@ -153,15 +149,13 @@ export class PaymentService {
     } catch (error) {
       await client.query("ROLLBACK");
 
-      const failedState = resolveNextState("PAYMENT_ORDER", "PAYMENT_FAILED", "INITIATED");
-
       await pool.query(
         `UPDATE cattleya_payment_ledger
-         SET status = $3,
+         SET status = 'FAILED',
              failure_reason = $2,
              updated_at = NOW()
          WHERE operation_id = $1`,
-        [params.operationId, error instanceof Error ? error.message : "Unknown payment error", failedState],
+        [params.operationId, error instanceof Error ? error.message : "Unknown payment error"],
       );
 
       throw error;
