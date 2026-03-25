@@ -181,7 +181,6 @@ export class ExperienceOrchestrator {
           `pattern=${pattern}`,
           `threshold=${this.threshold}`,
           `totalScore=${score.total.toFixed(2)}`,
-          `securityRisk=${securityRisk.toFixed(0)}`,
         ],
       },
       score,
