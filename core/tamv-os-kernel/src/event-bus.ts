@@ -94,6 +94,7 @@ export async function publishEvent(
     occurredAt: event.occurredAt ?? new Date().toISOString(),
     source: event.source,
     correlationId: event.correlationId,
+    canonical: event.canonical,
   };
 
   const streamId = options.streamId ?? `${enriched.federation}:${enriched.type}`;
