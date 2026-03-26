@@ -1,18 +1,51 @@
-# RDM Smart City OS (TAMV Sovereign Stack)
+# RDM Smart City OS + TAMV Civilizational Core
 
-Plataforma soberana para operación territorial de **Real del Monte, Hidalgo (México)**.
+Plataforma soberana para operacion territorial de **Real del Monte, Hidalgo (Mexico)**, ahora fusionada con el **Civilizational Core** de TAMV Online.
+
+## Fusion de Repositorios
+
+Este proyecto integra:
+- **rdm-smart-city-os**: Sistema operativo territorial con experiencia ciudadana/turistica
+- **civilizational-core**: Infraestructura civilizatoria digital soberana TAMV
 
 Combina:
-- experiencia ciudadana/turística (portal frontend),
-- núcleo de eventos (TAMV OS Kernel),
-- motor de decisiones (ISABELLA),
-- y economía transaccional (Cattleya Pay),
+- Experiencia ciudadana/turistica (portal frontend)
+- Nucleo de eventos (TAMV OS Kernel)
+- Motor de decisiones (ISABELLA AI)
+- Economia transaccional (Cattleya Pay + Protocolo Fenix)
+- Atlas de Federacion (monitoreo de nodos)
+- Guardian Console (HITL - Human in the Loop)
+- DevHub (API Gateway DM-X7)
 
-todo bajo un modelo **event-driven** con trazabilidad.
+Todo bajo un modelo **event-driven** con trazabilidad y arquitectura federada de 7 capas.
 
 ---
 
-## 1) ¿Qué es este proyecto?
+## Arquitectura Federada de 7 Capas (TAMV)
+
+```
++-------------------------------------------------------------+
+|  CAPA 7 - Metacivilizacion y Legado                         |
++-------------------------------------------------------------+
+|  CAPA 6 - Gobernanza, Legalidad y Compliance                |
++-------------------------------------------------------------+
+|  CAPA 5 - Economia Digital Etica (TAMV-T & FRI)             |
++-------------------------------------------------------------+
+|  CAPA 4 - Inteligencia Artificial Civilizacional (Isabella) |
++-------------------------------------------------------------+
+|  CAPA 3 - Arquitectura de Sistemas Distribuidos             |
++-------------------------------------------------------------+
+|  CAPA 2 - Experiencia XR & Arquitectura Sensorial           |
++-------------------------------------------------------------+
+|  CAPA 1 - Identidad Digital Soberana (ID-NVIDA)             |
++-------------------------------------------------------------+
+|  CAPA 0 - Infraestructura Fisica y Soberania Tecnica        |
++-------------------------------------------------------------+
+```
+
+---
+
+## 1) Que es este proyecto?
 
 `rdm-smart-city-os` es un sistema operativo territorial digital que unifica contenido, decisiones y operaciones para un destino inteligente.
 
