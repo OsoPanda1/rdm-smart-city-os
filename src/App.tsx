@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
@@ -30,6 +31,9 @@ import Paquetes from "./pages/Paquetes.tsx";
 import ComunidadPage from "./pages/ComunidadPage.tsx";
 import TransporteLocal from "./pages/TransporteLocal.tsx";
 import ShuttleCDMX from "./pages/ShuttleCDMX.tsx";
+import Atlas from "./pages/Atlas.tsx";
+import Guardian from "./pages/Guardian.tsx";
+import DevHub from "./pages/DevHub.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -41,11 +45,12 @@ const App = () => {
 
   return (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin" element={<Dashboard />} />
@@ -78,10 +83,15 @@ const App = () => {
           <Route path="/reglamento" element={<Reglamento />} />
           <Route path="/relatos" element={<Relatos />} />
           <Route path="/rutas" element={<Rutas />} />
+          {/* TAMV Civilizational Core Routes */}
+          <Route path="/atlas" element={<Atlas />} />
+          <Route path="/guardian" element={<Guardian />} />
+          <Route path="/devhub" element={<DevHub />} />
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
   );
 };
