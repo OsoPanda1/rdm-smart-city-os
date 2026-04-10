@@ -87,7 +87,8 @@ const App = () => {
           {/* TAMV Civilizational Core Routes */}
           <Route path="/atlas" element={<Atlas />} />
           <Route path="/guardian" element={<Guardian />} />
-          <Route path="/devhub" element={<DevHub />} />
+           <Route path="/devhub" element={<DevHub />} />
+           <Route path="/federation" element={<Federation />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
