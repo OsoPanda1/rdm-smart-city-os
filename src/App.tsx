@@ -34,6 +34,7 @@ import ShuttleCDMX from "./pages/ShuttleCDMX.tsx";
 import Atlas from "./pages/Atlas.tsx";
 import Guardian from "./pages/Guardian.tsx";
 import DevHub from "./pages/DevHub.tsx";
+import Federation from "./pages/Federation.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -86,7 +87,8 @@ const App = () => {
           {/* TAMV Civilizational Core Routes */}
           <Route path="/atlas" element={<Atlas />} />
           <Route path="/guardian" element={<Guardian />} />
-          <Route path="/devhub" element={<DevHub />} />
+           <Route path="/devhub" element={<DevHub />} />
+           <Route path="/federation" element={<Federation />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -242,6 +242,96 @@ export type Database = {
         }
         Relationships: []
       }
+      federation_data_streams: {
+        Row: {
+          created_at: string
+          downstream_repo: string | null
+          federation: string
+          id: string
+          integrity_hash: string | null
+          last_synced_at: string | null
+          payload: Json
+          source_repo: string
+          stream_type: string
+          sync_status: string
+          upstream_repo: string | null
+        }
+        Insert: {
+          created_at?: string
+          downstream_repo?: string | null
+          federation: string
+          id?: string
+          integrity_hash?: string | null
+          last_synced_at?: string | null
+          payload?: Json
+          source_repo: string
+          stream_type?: string
+          sync_status?: string
+          upstream_repo?: string | null
+        }
+        Update: {
+          created_at?: string
+          downstream_repo?: string | null
+          federation?: string
+          id?: string
+          integrity_hash?: string | null
+          last_synced_at?: string | null
+          payload?: Json
+          source_repo?: string
+          stream_type?: string
+          sync_status?: string
+          upstream_repo?: string | null
+        }
+        Relationships: []
+      }
+      guardian_actions: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          ethical_flags: Json | null
+          explanation: string | null
+          guardian_id: string | null
+          id: string
+          isabella_confidence: number | null
+          isabella_recommendation: string | null
+          msr_hash: string | null
+          resolved_at: string | null
+          status: string | null
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          ethical_flags?: Json | null
+          explanation?: string | null
+          guardian_id?: string | null
+          id?: string
+          isabella_confidence?: number | null
+          isabella_recommendation?: string | null
+          msr_hash?: string | null
+          resolved_at?: string | null
+          status?: string | null
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          ethical_flags?: Json | null
+          explanation?: string | null
+          guardian_id?: string | null
+          id?: string
+          isabella_confidence?: number | null
+          isabella_recommendation?: string | null
+          msr_hash?: string | null
+          resolved_at?: string | null
+          status?: string | null
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
       interactions: {
         Row: {
           created_at: string
@@ -416,6 +506,45 @@ export type Database = {
           metadata?: Json | null
           name?: string
           rating?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          is_guardian: boolean
+          role: string
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_guardian?: boolean
+          role?: string
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_guardian?: boolean
+          role?: string
+          updated_at?: string
+          user_id?: string
+          username?: string | null
         }
         Relationships: []
       }
