@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mountain, Cpu, Globe2, Shield, Sparkles, GitBranch, Building2, Users } from "lucide-react";
+import { Mountain, Cpu, Globe2, Shield, Sparkles, GitBranch, Building2, Users, ExternalLink, Calendar, Award } from "lucide-react";
 
 
 const PRINCIPLES = [
