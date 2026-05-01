@@ -412,6 +412,13 @@ const DichosPage = () => {
                 </AnimatePresence>
               </motion.div>
             )}
+
+            <ElegantPagination
+              page={page}
+              totalPages={totalPages}
+              onChange={(p) => { setPage(p); window.scrollTo({ top: 400, behavior: "smooth" }); }}
+              variant="numeric"
+            />
           </section>
 
           <section className="mt-32">
