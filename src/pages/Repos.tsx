@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Github, Star, Calendar, Code2, Search, ExternalLink } from "lucide-react";
-import { SovereignPageShell } from "@/components/SovereignPageShell";
+
 import repos from "@/data/osopanda-repos.json";
 
 interface Repo {
@@ -44,7 +44,7 @@ export default function Repos() {
   }, [list, q, lang]);
 
   return (
-    <SovereignPageShell>
+    
       <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative border-b border-border/40">
@@ -146,6 +146,6 @@ export default function Repos() {
           )}
         </section>
       </div>
-    </SovereignPageShell>
+    
   );
 }

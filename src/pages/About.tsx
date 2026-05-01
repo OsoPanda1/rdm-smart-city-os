@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Mountain, Cpu, Globe2, Shield, Sparkles, GitBranch, Building2, Users } from "lucide-react";
-import { SovereignPageShell } from "@/components/SovereignPageShell";
+
 
 const PRINCIPLES = [
   { icon: Users, title: "Antropocentrismo técnico", text: "La tecnología es un medio al servicio de la comunidad, nunca un fin en sí misma." },
@@ -28,7 +28,7 @@ const OBJECTIVES = [
 
 export default function About() {
   return (
-    <SovereignPageShell>
+    
       <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border/40">
@@ -221,6 +221,6 @@ export default function About() {
           </div>
         </section>
       </div>
-    </SovereignPageShell>
+    
   );
 }
