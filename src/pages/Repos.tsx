@@ -1,8 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Github, Star, Calendar, Code2, Search, ExternalLink } from "lucide-react";
+import { ElegantPagination } from "@/components/ElegantPagination";
 
 import repos from "@/data/osopanda-repos.json";
+
+const PAGE_SIZE = 24;
 
 interface Repo {
   name: string;
