@@ -31,6 +31,7 @@ const LANG_COLOR: Record<string, string> = {
 export default function Repos() {
   const [q, setQ] = useState("");
   const [lang, setLang] = useState<string>("all");
+  const [page, setPage] = useState(0);
 
   const list = repos as Repo[];
   const langs = useMemo(() => ["all", ...Array.from(new Set(list.map((r) => r.language)))], [list]);
@@ -45,6 +46,10 @@ export default function Repos() {
       return matchQ && matchL;
     });
   }, [list, q, lang]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  useEffect(() => { if (page >= totalPages) setPage(0); }, [page, totalPages]);
+  const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
     
