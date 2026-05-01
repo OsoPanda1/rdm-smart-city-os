@@ -296,7 +296,7 @@ const DichosPage = () => {
                 className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 <AnimatePresence mode="popLayout">
-                  {filteredDichos.map((dicho) => (
+                  {pagedDichos.map((dicho) => (
                     <motion.div
                       variants={cardVariant}
                       layout="position"
