@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ElegantPagination } from "@/components/ElegantPagination";
+
+const PAGE_SIZE_DICHOS = 12;
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Quote,
