@@ -74,6 +74,9 @@ export function FooterSection() {
                   {item}
                 </a>
               ))}
+              <a href="/about" className="block text-sm text-muted-foreground font-body hover:text-accent transition-colors">Acerca de RDM Digital</a>
+              <a href="/repos" className="block text-sm text-muted-foreground font-body hover:text-accent transition-colors">Ecosistema (104 repos)</a>
+              <a href="/federation" className="block text-sm text-muted-foreground font-body hover:text-accent transition-colors">Federación viva</a>
             </div>
           </div>
         </div>
