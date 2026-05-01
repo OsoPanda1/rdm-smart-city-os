@@ -798,5 +798,37 @@
     "stars": 0,
     "updated": "2026-04-30",
     "url": "https://github.com/OsoPanda1/utamv-academic-core"
+  },
+  {
+    "name": "utamv-elite-masterclass",
+    "description": "",
+    "language": "TypeScript",
+    "stars": 0,
+    "updated": "2026-03-07",
+    "url": "https://github.com/OsoPanda1/utamv-elite-masterclass"
+  },
+  {
+    "name": "web-4.0-genesis",
+    "description": "",
+    "language": "TypeScript",
+    "stars": 0,
+    "updated": "2026-01-22",
+    "url": "https://github.com/OsoPanda1/web-4.0-genesis"
+  },
+  {
+    "name": "web-scraping-telegram",
+    "description": "Web Scraping Telegram | [Text] [Content] [Message] [Reactions] [Replies] [Comments] [Channels] [Groups] [Chats]",
+    "language": "N/A",
+    "stars": 0,
+    "updated": "2024-12-16",
+    "url": "https://github.com/OsoPanda1/web-scraping-telegram"
+  },
+  {
+    "name": "ZAID-USERBOT",
+    "description": "A First Telegram Userbot Project With Multi Client Based On PyroGram. You can use it for normal uses and for spamming etcs. Deploy upto 10ids!",
+    "language": "N/A",
+    "stars": 1,
+    "updated": "2024-10-29",
+    "url": "https://github.com/OsoPanda1/ZAID-USERBOT"
   }
 ]
