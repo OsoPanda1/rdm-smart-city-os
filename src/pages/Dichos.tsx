@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ElegantPagination } from "@/components/ElegantPagination";
+
+const PAGE_SIZE_DICHOS = 12;
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Quote,
@@ -109,8 +112,9 @@ const DichosPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedSaid, setExpandedSaid] = useState<string | null>(null);
   const [likedDichos, setLikedDichos] = useState<Set<string>>(new Set());
+  const [page, setPage] = useState(0);
 
-  const filteredDichos = DICHOS.filter((dicho) => {
+  const filteredDichos = useMemo(() => DICHOS.filter((dicho) => {
     const matchesCategory =
       selectedCategory === "all" || dicho.categoria === selectedCategory;
     const query = searchQuery.toLowerCase();
@@ -118,9 +122,13 @@ const DichosPage = () => {
       dicho.texto.toLowerCase().includes(query) ||
       dicho.personaje.toLowerCase().includes(query) ||
       dicho.significado.toLowerCase().includes(query);
-
     return matchesCategory && matchesSearch;
-  });
+  }), [selectedCategory, searchQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredDichos.length / PAGE_SIZE_DICHOS));
+  useEffect(() => { if (page >= totalPages) setPage(0); }, [page, totalPages]);
+  useEffect(() => { setPage(0); }, [selectedCategory, searchQuery]);
+  const pagedDichos = filteredDichos.slice(page * PAGE_SIZE_DICHOS, (page + 1) * PAGE_SIZE_DICHOS);
 
   const handleLike = (id: string) => {
     setLikedDichos((prev) => {
@@ -288,7 +296,7 @@ const DichosPage = () => {
                 className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 <AnimatePresence mode="popLayout">
-                  {filteredDichos.map((dicho) => (
+                  {pagedDichos.map((dicho) => (
                     <motion.div
                       variants={cardVariant}
                       layout="position"
@@ -404,6 +412,13 @@ const DichosPage = () => {
                 </AnimatePresence>
               </motion.div>
             )}
+
+            <ElegantPagination
+              page={page}
+              totalPages={totalPages}
+              onChange={(p) => { setPage(p); window.scrollTo({ top: 400, behavior: "smooth" }); }}
+              variant="numeric"
+            />
           </section>
 
           <section className="mt-32">
