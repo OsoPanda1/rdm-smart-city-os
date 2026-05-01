@@ -76,14 +76,14 @@ export default function Repos() {
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={(e) => { setQ(e.target.value); setPage(0); }}
                 placeholder="Buscar por nombre o descripción..."
                 className="w-full pl-10 pr-4 py-2.5 bg-muted/40 border border-border rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-accent"
               />
             </div>
             <select
               value={lang}
-              onChange={(e) => setLang(e.target.value)}
+              onChange={(e) => { setLang(e.target.value); setPage(0); }}
               className="px-4 py-2.5 bg-muted/40 border border-border rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-accent"
             >
               {langs.map((l) => (
@@ -92,8 +92,8 @@ export default function Repos() {
                 </option>
               ))}
             </select>
-            <div className="flex items-center px-4 text-sm text-muted-foreground">
-              {filtered.length} / {list.length}
+            <div className="flex items-center px-4 text-sm text-muted-foreground whitespace-nowrap">
+              {filtered.length} de {list.length} · Pág. {page + 1}/{totalPages}
             </div>
           </div>
         </section>
@@ -101,7 +101,7 @@ export default function Repos() {
         {/* Grid */}
         <section className="max-w-7xl mx-auto px-6 py-12">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((r, i) => (
+            {paged.map((r, i) => (
               <motion.a
                 key={r.name}
                 href={r.url}
@@ -109,7 +109,7 @@ export default function Repos() {
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(i * 0.015, 0.5) }}
+                transition={{ delay: Math.min(i * 0.015, 0.3) }}
                 className="group block p-5 rounded-xl border border-border/40 bg-card/40 hover:bg-card/80 hover:border-accent/40 transition-all"
               >
                 <div className="flex items-start justify-between gap-2 mb-3">
@@ -125,11 +125,7 @@ export default function Repos() {
                   {r.description || <span className="italic opacity-60">Sin descripción</span>}
                 </p>
                 <div className="flex items-center gap-2 flex-wrap text-[10px]">
-                  <span
-                    className={`px-2 py-0.5 rounded border ${
-                      LANG_COLOR[r.language] || LANG_COLOR["N/A"]
-                    }`}
-                  >
+                  <span className={`px-2 py-0.5 rounded border ${LANG_COLOR[r.language] || LANG_COLOR["N/A"]}`}>
                     <Code2 className="w-2.5 h-2.5 inline mr-1" />
                     {r.language}
                   </span>
@@ -147,10 +143,17 @@ export default function Repos() {
               </motion.a>
             ))}
           </div>
-          {filtered.length === 0 && (
+          {filtered.length === 0 ? (
             <div className="text-center py-20 text-muted-foreground">
               No se encontraron repositorios con esos criterios.
             </div>
+          ) : (
+            <ElegantPagination
+              page={page}
+              totalPages={totalPages}
+              onChange={(p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              variant="numeric"
+            />
           )}
         </section>
       </div>
