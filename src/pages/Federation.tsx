@@ -55,18 +55,16 @@ export default function Federation() {
 
   useEffect(() => {
     const fetchStreams = async () => {
-      const { data, error } = await supabase
-        .from("federation_data_streams")
-        .select("*")
-        .eq("sync_status", "active")
-        .order("created_at", { ascending: true });
+      const { data, error } = await supabase.functions.invoke("federation-pulse", { body: {} });
 
-      if (!error && data) {
-        setStreams(data as unknown as DataStream[]);
+      if (!error && data?.modules) {
+        setStreams(data.modules as unknown as DataStream[]);
       }
       setLoading(false);
     };
     fetchStreams();
+    const interval = window.setInterval(fetchStreams, 30000);
+    return () => window.clearInterval(interval);
   }, []);
 
   // Animate the pulse flowing through the chain
@@ -115,8 +113,8 @@ export default function Federation() {
                 Cadena Viva de Datos
               </h1>
             </div>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              11 repositorios formando un circuito vivo de flujo de datos constante.
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Repositorios relacionados con RDM Digital, Smart City y Digital Twins formando un circuito vivo de datos.
               Cada repo alimenta al siguiente en una cadena heptafederada soberana.
             </p>
           </motion.div>
@@ -191,7 +189,7 @@ export default function Federation() {
                               {stream.source_repo}
                             </CardTitle>
                             <p className="text-xs text-muted-foreground">
-                              {stream.stream_type.replace(/_/g, " ")}
+                              {stream.stream_type.replace(/_/g, " ")} · {(stream as any).latency_ms ?? "—"}ms
                             </p>
                           </div>
                         </div>
@@ -200,7 +198,7 @@ export default function Federation() {
                             {stream.federation}
                           </Badge>
                           <Badge className="bg-emerald-500/20 text-emerald-400 text-xs border-0">
-                            {stream.sync_status}
+                            {(stream as any).pulse ?? stream.sync_status}
                           </Badge>
                         </div>
                       </div>
