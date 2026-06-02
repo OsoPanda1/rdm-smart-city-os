@@ -230,3 +230,17 @@ function RealitoAIInner() {
     </div>
   );
 }
+
+export default function RealitoAI() {
+  return (
+    <PageTransition>
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-1 pt-24 pb-20 container mx-auto px-6">
+          <RealitoAIInner />
+        </main>
+        <Footer />
+      </div>
+    </PageTransition>
+  );
+}
