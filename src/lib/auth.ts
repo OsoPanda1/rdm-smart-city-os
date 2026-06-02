@@ -35,11 +35,14 @@ export async function signUp({ email, password, username, displayName }: SignUpD
 
   if (error) throw error;
   if (data.user) {
-    await supabase.from("profiles").upsert({
-      user_id: data.user.id,
-      username,
-      display_name: displayName || username,
-    }, { onConflict: "user_id" });
+    const { data: existingProfile } = await supabase.from("profiles").select("id").eq("user_id", data.user.id).maybeSingle();
+    if (!existingProfile) {
+      await supabase.from("profiles").insert({
+        user_id: data.user.id,
+        username,
+        display_name: displayName || username,
+      });
+    }
   }
   return data;
 }
