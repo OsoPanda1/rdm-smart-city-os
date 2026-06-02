@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import {
   Radio, ScrollText, Network, Cpu, ShieldCheck, GitBranch, Layers3,
   MapPin, Bot, BookOpen, Ghost, Bus, Store, Users, Sparkles, Activity,
@@ -9,6 +10,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { PageTransition, TextReveal } from "@/components/VisualEffects";
 import SEOMeta from "@/components/SEOMeta";
+import { ElegantPagination } from "@/components/ElegantPagination";
+import { supabase } from "@/integrations/supabase/client";
 
 type Module = { to: string; icon: any; title: string; desc: string; tag: string };
 
@@ -38,7 +41,32 @@ const PILLARS = [
   { icon: ShieldCheck, label: "PQC + RLS", value: "Activo", color: "text-electric" },
 ];
 
+const PAGE_SIZE = 8;
+
 export default function NodoCero() {
+  const [query, setQuery] = useState("");
+  const [tag, setTag] = useState("Todos");
+  const [page, setPage] = useState(0);
+  const [pulse, setPulse] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadPulse = async () => {
+      const { data } = await supabase.functions.invoke("federation-pulse", { body: {} });
+      if (data?.modules) setPulse(data.modules);
+    };
+    void loadPulse();
+    const interval = window.setInterval(loadPulse, 30000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const tags = useMemo(() => ["Todos", ...Array.from(new Set(MODULES.map((module) => module.tag)))], []);
+  const filteredModules = useMemo(() => MODULES.filter((module) => {
+    const text = `${module.title} ${module.desc} ${module.tag}`.toLowerCase();
+    return (tag === "Todos" || module.tag === tag) && (!query || text.includes(query.toLowerCase()));
+  }), [query, tag]);
+  const totalPages = Math.max(1, Math.ceil(filteredModules.length / PAGE_SIZE));
+  const pagedModules = filteredModules.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <PageTransition>
       <SEOMeta
@@ -79,15 +107,23 @@ export default function NodoCero() {
                 >
                   <p.icon className={`w-5 h-5 mx-auto mb-2 ${p.color}`} />
                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{p.label}</p>
-                  <p className={`font-display text-lg font-semibold ${p.color}`}>{p.value}</p>
+                  <p className={`font-display text-lg font-semibold ${p.color}`}>{p.label === "Repos vivos" && pulse.length ? `${pulse.filter((m) => m.pulse === "live").length} / ${pulse.length}` : p.value}</p>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="max-w-5xl mx-auto mb-8 grid gap-3 md:grid-cols-[1fr_220px_120px]">
+              <input value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }} placeholder="Buscar módulos, comercios o repos…" className="rounded-xl border border-border/50 bg-card/50 px-4 py-3 text-sm outline-none focus:border-accent/60" />
+              <select value={tag} onChange={(event) => { setTag(event.target.value); setPage(0); }} className="rounded-xl border border-border/50 bg-card/50 px-4 py-3 text-sm outline-none focus:border-accent/60">
+                {tags.map((item) => <option key={item} value={item}>{item}</option>)}
+              </select>
+              <div className="rounded-xl border border-border/50 bg-card/50 px-4 py-3 text-center text-xs text-muted-foreground">{filteredModules.length} nodos</div>
             </div>
 
             {/* Modules grid */}
             <section aria-label="Módulos federados">
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto">
-                {MODULES.map((m, i) => (
+                {pagedModules.map((m, i) => (
                   <motion.div
                     key={m.to}
                     initial={{ opacity: 0, y: 16 }}
@@ -115,6 +151,7 @@ export default function NodoCero() {
                   </motion.div>
                 ))}
               </div>
+              <div className="max-w-5xl mx-auto"><ElegantPagination page={page} totalPages={totalPages} onChange={setPage} variant="numeric" /></div>
             </section>
           </section>
         </main>

@@ -3,9 +3,9 @@ import { LONG_FORM_NARRATIVES, REAL_DEL_MONTE_FACTS } from "@/lib/tourism-knowle
 import { type Intent } from "./types";
 
 export const REAL_DEL_MONTE_SITES = [
-  { id: "1", name: "Mina de Acosta", category: "historia", lat: 20.138, lng: -98.671, rating: 4.8, description: "Mina histórica del siglo XVIII, joya del patrimonio minero." },
-  { id: "2", name: "Museo de Medicina Laboral", category: "cultura", lat: 20.139, lng: -98.673, rating: 4.6, description: "Historia médica de los mineros de Real del Monte." },
-  { id: "3", name: "Panteón Inglés", category: "historia", lat: 20.137, lng: -98.67, rating: 4.9, description: "Cementerio histórico de mineros británicos, único en México." },
+  { id: "1", name: "Mina de Acosta", category: "historia", lat: 20.1466566, lng: -98.6676983, rating: 4.8, description: "Mina histórica del siglo XVIII, joya del patrimonio minero." },
+  { id: "2", name: "Museo de Medicina Laboral", category: "cultura", lat: 20.1399368, lng: -98.6740568, rating: 4.6, description: "Historia médica de los mineros de Real del Monte." },
+  { id: "3", name: "Panteón Inglés", category: "historia", lat: 20.1382163, lng: -98.6671239, rating: 4.9, description: "Cementerio histórico de mineros británicos, único en México." },
   { id: "4", name: "Pastes El Portal", category: "gastronomia", lat: 20.14, lng: -98.672, rating: 4.7, description: "Los mejores pastes tradicionales cornish del pueblo." },
   { id: "5", name: "Pastes Kikos", category: "gastronomia", lat: 20.139, lng: -98.674, rating: 4.5, description: "Pastes artesanales con recetas originales desde 1940." },
   { id: "6", name: "Hotel Real del Monte", category: "hospedaje", lat: 20.141, lng: -98.675, rating: 4.3, description: "Hospedaje colonial con vista a las montañas." },
