@@ -5,12 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "clean": "rm -rf dist coverage .vite",
     "build": "vite build",
+    "build:clean": "bun run clean && vite build",
     "build:dev": "vite build --mode development",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "bun run lint && bun run typecheck && bun run test && bun run build:clean"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
