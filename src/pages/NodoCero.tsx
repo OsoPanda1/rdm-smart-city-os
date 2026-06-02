@@ -1,0 +1,125 @@
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import {
+  Radio, ScrollText, Network, Cpu, ShieldCheck, GitBranch, Layers3,
+  MapPin, Bot, BookOpen, Ghost, Bus, Store, Users, Sparkles, Activity,
+  Crown, Compass, Music2, Heart, Code2,
+} from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { PageTransition, TextReveal } from "@/components/VisualEffects";
+import SEOMeta from "@/components/SEOMeta";
+
+type Module = { to: string; icon: any; title: string; desc: string; tag: string };
+
+const MODULES: Module[] = [
+  { to: "/tamv-hub", icon: ScrollText, title: "TAMV Hub", desc: "Tesis soberana del Sistema Operativo Territorial.", tag: "Marco" },
+  { to: "/federation", icon: Network, title: "Federación Viva", desc: "11 repos sincronizados en cadena de datos.", tag: "Federación" },
+  { to: "/repos", icon: GitBranch, title: "Ecosistema OsoPanda", desc: "104 repositorios federados del ecosistema.", tag: "Código" },
+  { to: "/realito", icon: Bot, title: "Realito AI", desc: "Oráculo cognitivo territorial con streaming.", tag: "IA" },
+  { to: "/atlas", icon: Layers3, title: "Atlas Soberano", desc: "Capas territoriales y telemetría viva.", tag: "Atlas" },
+  { to: "/guardian", icon: ShieldCheck, title: "Guardian Board", desc: "Gobernanza y supervisión HITL.", tag: "Gobernanza" },
+  { to: "/mapa", icon: MapPin, title: "Mapa Interactivo", desc: "POIs, rutas y zonas del territorio.", tag: "Territorio" },
+  { to: "/dichos", icon: BookOpen, title: "Callejón del Dicho", desc: "Archivo vivo de expresiones locales.", tag: "Memoria" },
+  { to: "/mitos", icon: Ghost, title: "Mitos y Leyendas", desc: "Historias que la montaña no deja morir.", tag: "Cultura" },
+  { to: "/comercios", icon: Store, title: "Comercios RDM", desc: "Directorio verificado de negocios locales.", tag: "Economía" },
+  { to: "/comunidad", icon: Users, title: "Comunidad", desc: "Voces, reseñas y participación ciudadana.", tag: "Social" },
+  { to: "/transporte", icon: Bus, title: "Transporte", desc: "Shuttles CDMX y movilidad local.", tag: "Movilidad" },
+  { to: "/paquetes", icon: Crown, title: "Paquetes", desc: "Experiencias premium curadas.", tag: "Turismo" },
+  { to: "/rutas", icon: Compass, title: "Rutas y Recorridos", desc: "Senderos, minas y patrimonio.", tag: "Experiencias" },
+  { to: "/about", icon: Sparkles, title: "Manifiesto", desc: "Visión y arquitectura de 4 capas.", tag: "Acerca" },
+  { to: "/devhub", icon: Code2, title: "Dev Hub", desc: "API explorer y contratos federados.", tag: "Devs" },
+];
+
+const PILLARS = [
+  { icon: Radio, label: "Nodo Cero", value: "ONLINE", color: "text-emerald-400" },
+  { icon: Activity, label: "Heptafederación", value: "7 capas", color: "text-accent" },
+  { icon: Network, label: "Repos vivos", value: "11 / 104", color: "text-gold" },
+  { icon: ShieldCheck, label: "PQC + RLS", value: "Activo", color: "text-electric" },
+];
+
+export default function NodoCero() {
+  return (
+    <PageTransition>
+      <SEOMeta
+        title="Nodo Cero · RDM Digital · TAMV Online"
+        description="Centro de mando soberano de Real del Monte. Sistema Operativo Territorial federado, abierto y auditable."
+      />
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-1 pt-24 pb-20">
+          <section className="container mx-auto px-6">
+            <TextReveal>
+              <div className="max-w-3xl mx-auto text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/40 bg-accent/5 mb-4">
+                  <Radio className="w-3.5 h-3.5 text-accent animate-pulse" />
+                  <span className="text-[10px] tracking-[0.3em] uppercase text-accent font-body">
+                    Centro de Mando · RDM Digital v4.1
+                  </span>
+                </div>
+                <h1 className="font-display text-5xl md:text-7xl font-bold mb-4">
+                  Nodo <span className="text-gradient-gold">Cero</span>
+                </h1>
+                <p className="text-lg text-muted-foreground font-body">
+                  Real del Monte como infraestructura civilizatoria abierta. Toda la
+                  federación viva en una sola pantalla.
+                </p>
+              </div>
+            </TextReveal>
+
+            {/* Pulse pillars */}
+            <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 mb-12">
+              {PILLARS.map((p) => (
+                <motion.div
+                  key={p.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="rounded-2xl border border-border/40 bg-card/40 p-4 text-center"
+                >
+                  <p.icon className={`w-5 h-5 mx-auto mb-2 ${p.color}`} />
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{p.label}</p>
+                  <p className={`font-display text-lg font-semibold ${p.color}`}>{p.value}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Modules grid */}
+            <section aria-label="Módulos federados">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto">
+                {MODULES.map((m, i) => (
+                  <motion.div
+                    key={m.to}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ delay: Math.min(i * 0.03, 0.4) }}
+                  >
+                    <Link
+                      to={m.to}
+                      className="group block h-full p-5 rounded-2xl border border-border/40 bg-card/40 hover:border-accent/40 hover:bg-card/80 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent/20 to-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <m.icon className="w-5 h-5 text-accent" />
+                        </div>
+                        <span className="text-[9px] px-2 py-0.5 rounded-full border border-border/60 text-muted-foreground tracking-[0.16em] uppercase">
+                          {m.tag}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-base font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">
+                        {m.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </PageTransition>
+  );
+}
