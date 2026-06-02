@@ -34,6 +34,13 @@ export async function signUp({ email, password, username, displayName }: SignUpD
   });
 
   if (error) throw error;
+  if (data.user) {
+    await supabase.from("profiles").upsert({
+      user_id: data.user.id,
+      username,
+      display_name: displayName || username,
+    }, { onConflict: "user_id" });
+  }
   return data;
 }
 

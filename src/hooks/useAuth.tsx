@@ -4,6 +4,7 @@ import type { User, Session } from "@supabase/supabase-js";
 
 interface Profile {
   id: string;
+  user_id: string;
   username: string;
   display_name: string | null;
   avatar_url: string | null;
@@ -35,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", userId)
+      .eq("user_id", userId)
       .single();
 
     if (error) {

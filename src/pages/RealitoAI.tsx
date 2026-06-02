@@ -9,7 +9,7 @@ import { PageTransition } from "@/components/VisualEffects";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/realito-chat`;
 
 const capabilities = [
   { icon: MapPin, title: "Sugerencias Predictivas", description: "Recomienda negocios y experiencias premium según densidad de jugadores, tiempo de estancia y contexto climático.", accent: "gold" },
