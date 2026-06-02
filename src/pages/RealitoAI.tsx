@@ -32,7 +32,7 @@ const quickPrompts = [
   "¿Cómo funciona Veta Soberana?",
 ];
 
-export default function RealitoAI() {
+function RealitoAIInner() {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
