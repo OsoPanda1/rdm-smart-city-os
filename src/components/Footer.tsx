@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
+import DedicationBanner from "@/components/DedicationBanner";
 
 const Footer = () => {
   return (
@@ -41,6 +42,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
+        <DedicationBanner />
         <div className="border-t border-border/40 pt-6 flex flex-col sm:flex-row gap-2 justify-between text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} RDM Digital OS · Sovereign-Crystal v5.2 · TAMV Online México</p>
           <p>Creado por Edwin Oswaldo Castillo Trejo</p>
