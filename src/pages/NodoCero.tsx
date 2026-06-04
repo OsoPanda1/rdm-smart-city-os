@@ -17,6 +17,7 @@ type Module = { to: string; icon: any; title: string; desc: string; tag: string 
 
 const MODULES: Module[] = [
   { to: "/tamv-hub", icon: ScrollText, title: "TAMV Hub", desc: "Tesis soberana del Sistema Operativo Territorial.", tag: "Marco" },
+  { to: "/ltos", icon: Layers3, title: "Plataforma LTOS", desc: "Fusión unificada de 12 sub-plataformas territoriales.", tag: "Fusión" },
   { to: "/federation", icon: Network, title: "Federación Viva", desc: "11 repos sincronizados en cadena de datos.", tag: "Federación" },
   { to: "/repos", icon: GitBranch, title: "Ecosistema OsoPanda", desc: "104 repositorios federados del ecosistema.", tag: "Código" },
   { to: "/realito", icon: Bot, title: "Realito AI", desc: "Oráculo cognitivo territorial con streaming.", tag: "IA" },
