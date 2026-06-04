@@ -184,6 +184,7 @@ export default function Ltos() {
               </Link>
             </div>
           </section>
+          </RoleGuard>
         </main>
         <Footer />
       </div>
