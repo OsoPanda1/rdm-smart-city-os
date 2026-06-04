@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import { PageTransition, TextReveal } from "@/components/VisualEffects";
 import SEOMeta from "@/components/SEOMeta";
 import { ElegantPagination } from "@/components/ElegantPagination";
+import LtosMap from "@/components/LtosMap";
 import { supabase } from "@/integrations/supabase/client";
 
 type Module = { to: string; icon: any; title: string; desc: string; tag: string };
@@ -112,6 +113,15 @@ export default function NodoCero() {
                 </motion.div>
               ))}
             </div>
+
+            <div className="max-w-6xl mx-auto mb-10">
+              <h2 className="font-display text-xl mb-3 text-center">Geolocalización viva de plataformas LTOS</h2>
+              <LtosMap height={340} />
+              <p className="text-[10px] text-muted-foreground mt-2 text-center tracking-wide">
+                12 sub-plataformas ancladas a puntos verificados de Real del Monte · Click un pin para abrir su detalle.
+              </p>
+            </div>
+
 
             <div className="max-w-5xl mx-auto mb-8 grid gap-3 md:grid-cols-[1fr_220px_120px]">
               <input value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }} placeholder="Buscar módulos, comercios o repos…" className="rounded-xl border border-border/50 bg-card/50 px-4 py-3 text-sm outline-none focus:border-accent/60" />
