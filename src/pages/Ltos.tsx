@@ -114,6 +114,13 @@ export default function Ltos() {
               </div>
             </div>
 
+            <div className="max-w-6xl mx-auto mb-8">
+              <LtosMap height={320} />
+              <p className="text-[10px] text-muted-foreground mt-2 text-center tracking-wide">
+                Geolocalización verificada · Real del Monte, Hidalgo · Click un pin para abrir el detalle.
+              </p>
+            </div>
+
             {/* Platforms grid */}
             <div className="grid md:grid-cols-2 gap-4 max-w-6xl mx-auto">
               {paged.map((p, i) => (
@@ -165,6 +172,14 @@ export default function Ltos() {
                         {h}
                       </span>
                     ))}
+                  </div>
+                  <div className="mt-4 flex justify-end">
+                    <Link
+                      to={`/ltos/${p.slug}`}
+                      className="text-xs px-3 py-1.5 rounded-full border border-accent/40 text-accent hover:bg-accent/10 transition"
+                    >
+                      Ver detalle →
+                    </Link>
                   </div>
                 </motion.article>
               ))}
