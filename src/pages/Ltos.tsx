@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import { PageTransition, TextReveal } from "@/components/VisualEffects";
 import SEOMeta from "@/components/SEOMeta";
 import { ElegantPagination } from "@/components/ElegantPagination";
+import RoleGuard from "@/components/RoleGuard";
+import LtosMap from "@/components/LtosMap";
 import data from "@/data/ltos-platforms.json";
 
 const PAGE_SIZE = 6;
@@ -49,6 +51,7 @@ export default function Ltos() {
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <main className="flex-1 pt-24 pb-20">
+          <RoleGuard allow={["admin", "comercio", "usuario"]}>
           <section className="container mx-auto px-6">
             <TextReveal>
               <div className="max-w-3xl mx-auto text-center mb-12">
