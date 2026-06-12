@@ -95,7 +95,7 @@ export default function Playlist() {
       sessionStorage.setItem("rdm-donation-notice", "1");
     }
     // increment play count (best-effort)
-    void supabase.from("tracks" as never).update({ play_count: track.play_count + 1 }).eq("id", track.id);
+    void supabase.from("tracks" as never).update({ play_count: track.play_count + 1 } as never).eq("id", track.id);
   }
 
   function togglePlay() {
