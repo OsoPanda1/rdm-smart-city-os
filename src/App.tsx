@@ -45,6 +45,7 @@ import RealitoAI from "./pages/RealitoAI.tsx";
 import Ltos from "./pages/Ltos.tsx";
 import LtosDetail from "./pages/LtosDetail.tsx";
 import Genesis from "./pages/Genesis.tsx";
+import Playlist from "./pages/Playlist.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
