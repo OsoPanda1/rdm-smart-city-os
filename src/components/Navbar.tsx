@@ -13,6 +13,8 @@ const links = [
   { to: "/paquetes", label: "Paquetes" },
   { to: "/comunidad", label: "Comunidad" },
   { to: "/transporte", label: "Transporte" },
+  { to: "/playlist", label: "Playlist" },
+  { to: "/apoya", label: "Apoya" },
   { to: "/tamv-hub", label: "TAMV" },
 ];
 
