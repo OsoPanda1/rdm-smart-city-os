@@ -118,6 +118,9 @@ const App = () => {
            <Route path="/fusion" element={<Ltos />} />
            <Route path="/genesis" element={<Genesis />} />
            <Route path="/unificacion" element={<Genesis />} />
+           <Route path="/playlist" element={<Playlist />} />
+           <Route path="/musica" element={<Playlist />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
