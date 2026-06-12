@@ -14,7 +14,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import ElegantPagination from "@/components/ElegantPagination";
+import { ElegantPagination } from "@/components/ElegantPagination";
 import { paymentsApi } from "@/lib/api";
 import { Play, Pause, Music, Heart, Upload, Loader2, SkipForward, SkipBack } from "lucide-react";
 
