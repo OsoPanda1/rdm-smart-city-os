@@ -44,6 +44,7 @@ import TamvHub from "./pages/TamvHub.tsx";
 import RealitoAI from "./pages/RealitoAI.tsx";
 import Ltos from "./pages/Ltos.tsx";
 import LtosDetail from "./pages/LtosDetail.tsx";
+import Genesis from "./pages/Genesis.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -114,6 +115,8 @@ const App = () => {
            <Route path="/plataforma-ltos" element={<Ltos />} />
            <Route path="/plataforma-ltos/:slug" element={<LtosDetail />} />
            <Route path="/fusion" element={<Ltos />} />
+           <Route path="/genesis" element={<Genesis />} />
+           <Route path="/unificacion" element={<Genesis />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
