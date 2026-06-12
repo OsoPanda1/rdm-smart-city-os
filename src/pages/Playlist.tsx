@@ -247,7 +247,7 @@ export default function Playlist() {
               </div>
 
               <div className="mt-8">
-                <ElegantPagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+                <ElegantPagination page={page - 1} totalPages={totalPages} onChange={(p) => setPage(p + 1)} />
               </div>
             </>
           )}
