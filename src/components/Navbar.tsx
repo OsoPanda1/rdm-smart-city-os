@@ -5,13 +5,17 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { to: "/", label: "Inicio" },
+  { to: "/nodo-cero", label: "Nodo Cero" },
   { to: "/explorar", label: "Explorar" },
   { to: "/dichos", label: "Dichos" },
+  { to: "/mitos", label: "Mitos" },
   { to: "/comercios", label: "Comercios" },
   { to: "/paquetes", label: "Paquetes" },
   { to: "/comunidad", label: "Comunidad" },
-  { to: "/shuttle-cdmx-rdm", label: "Shuttle" },
-  { to: "/transporte-local", label: "Transporte" },
+  { to: "/transporte", label: "Transporte" },
+  { to: "/playlist", label: "Playlist" },
+  { to: "/apoya", label: "Apoya" },
+  { to: "/tamv-hub", label: "TAMV" },
 ];
 
 const Navbar = () => {

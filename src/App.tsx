@@ -37,6 +37,15 @@ import DevHub from "./pages/DevHub.tsx";
 import Federation from "./pages/Federation.tsx";
 import About from "./pages/About.tsx";
 import Repos from "./pages/Repos.tsx";
+import NodoCero from "./pages/NodoCero.tsx";
+import Mitos from "./pages/Mitos.tsx";
+import Transporte from "./pages/Transporte.tsx";
+import TamvHub from "./pages/TamvHub.tsx";
+import RealitoAI from "./pages/RealitoAI.tsx";
+import Ltos from "./pages/Ltos.tsx";
+import LtosDetail from "./pages/LtosDetail.tsx";
+import Genesis from "./pages/Genesis.tsx";
+import Playlist from "./pages/Playlist.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -77,7 +86,7 @@ const App = () => {
           <Route path="/sabores" element={<Gastronomia />} />
           <Route path="/economia" element={<NegociosPortal />} />
           <Route path="/planificador" element={<Rutas />} />
-          <Route path="/realito" element={<Dashboard />} />
+          <Route path="/realito" element={<RealitoAI />} />
           <Route path="/negocios-portal" element={<NegociosPortal />} />
           <Route path="/comercios" element={<Comercios />} />
           <Route path="/paquetes" element={<Paquetes />} />
@@ -95,6 +104,23 @@ const App = () => {
            <Route path="/acerca" element={<About />} />
            <Route path="/repos" element={<Repos />} />
            <Route path="/ecosistema" element={<Repos />} />
+           <Route path="/nodo-cero" element={<NodoCero />} />
+           <Route path="/centro-mando" element={<NodoCero />} />
+           <Route path="/mitos" element={<Mitos />} />
+           <Route path="/transporte" element={<Transporte />} />
+           <Route path="/tamv-hub" element={<TamvHub />} />
+           <Route path="/tamv" element={<TamvHub />} />
+           <Route path="/realito-ai" element={<RealitoAI />} />
+           <Route path="/ltos" element={<Ltos />} />
+           <Route path="/ltos/:slug" element={<LtosDetail />} />
+           <Route path="/plataforma-ltos" element={<Ltos />} />
+           <Route path="/plataforma-ltos/:slug" element={<LtosDetail />} />
+           <Route path="/fusion" element={<Ltos />} />
+           <Route path="/genesis" element={<Genesis />} />
+           <Route path="/unificacion" element={<Genesis />} />
+           <Route path="/playlist" element={<Playlist />} />
+           <Route path="/musica" element={<Playlist />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
