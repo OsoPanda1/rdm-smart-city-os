@@ -46,6 +46,15 @@ import Ltos from "./pages/Ltos.tsx";
 import LtosDetail from "./pages/LtosDetail.tsx";
 import Genesis from "./pages/Genesis.tsx";
 import Playlist from "./pages/Playlist.tsx";
+import Noticias from "./pages/Noticias.tsx";
+import GeoExplorer from "./pages/GeoExplorer.tsx";
+import TradeNode from "./pages/TradeNode.tsx";
+import Servicios from "./pages/Servicios.tsx";
+import Membresias from "./pages/Membresias.tsx";
+import Foro from "./pages/Foro.tsx";
+import Kernel from "./pages/Kernel.tsx";
+import Media from "./pages/Media.tsx";
+import Manual from "./pages/Manual.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -120,7 +129,20 @@ const App = () => {
            <Route path="/unificacion" element={<Genesis />} />
            <Route path="/playlist" element={<Playlist />} />
            <Route path="/musica" element={<Playlist />} />
-          <Route path="*" element={<NotFound />} />
+           <Route path="/noticias" element={<Noticias />} />
+           <Route path="/infomesh" element={<Noticias />} />
+           <Route path="/geoexplorer" element={<GeoExplorer />} />
+           <Route path="/tradenode" element={<TradeNode />} />
+           <Route path="/tienda" element={<TradeNode />} />
+           <Route path="/servicios" element={<Servicios />} />
+           <Route path="/membresias" element={<Membresias />} />
+           <Route path="/gamificacion" element={<Membresias />} />
+           <Route path="/foro" element={<Foro />} />
+           <Route path="/kernel" element={<Kernel />} />
+           <Route path="/telemetria" element={<Kernel />} />
+           <Route path="/media" element={<Media />} />
+           <Route path="/podcast" element={<Media />} />
+           <Route path="/manual" element={<Manual />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -32,6 +32,8 @@ const Footer = () => {
               <Link to="/shuttle-cdmx-rdm" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Shuttle CDMX</Link>
               <Link to="/transporte-local" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Transporte Local</Link>
               <Link to="/comunidad" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Comunidad</Link>
+              <Link to="/servicios" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Servicios</Link>
+              <Link to="/foro" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Foro Cívico</Link>
             </div>
           </div>
           <div>
@@ -39,6 +41,9 @@ const Footer = () => {
             <div className="flex flex-col gap-1.5">
               <Link to="/reglamento" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Reglamento</Link>
               <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Acceso</Link>
+              <Link to="/kernel" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Kernel TAMV</Link>
+              <Link to="/manual" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Manual de Diseño</Link>
+              <Link to="/media" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Podcast</Link>
             </div>
           </div>
         </div>
