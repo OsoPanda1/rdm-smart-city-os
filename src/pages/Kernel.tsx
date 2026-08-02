@@ -132,7 +132,7 @@ export default function Kernel() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={ROUTE_ELEVATION_DATA[route]}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="distanceKm" stroke="hsl(var(--muted-foreground))" fontSize={11} />
+                <XAxis dataKey="km" stroke="hsl(var(--muted-foreground))" fontSize={11} />
                 <YAxis domain={["auto", "auto"]} stroke="hsl(var(--muted-foreground))" fontSize={11} />
                 <Tooltip
                   contentStyle={{
@@ -142,7 +142,7 @@ export default function Kernel() {
                     fontSize: 12,
                   }}
                 />
-                <Line type="monotone" dataKey="elevationM" stroke="hsl(var(--accent))" dot={false} strokeWidth={2} />
+                <Line type="monotone" dataKey="altitudeMsnm" stroke="hsl(var(--accent))" dot={false} strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -164,7 +164,8 @@ export default function Kernel() {
                     fontSize: 12,
                   }}
                 />
-                <Bar dataKey="visitantes" fill="hsl(var(--accent))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="peatonesCentro" fill="hsl(var(--accent))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="peatonesMinas" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
