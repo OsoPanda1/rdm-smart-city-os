@@ -177,7 +177,7 @@ export default function Kernel() {
           <ElegantCard key={item.category} index={i}>
             <h3 className="font-display text-base font-semibold mb-2">{item.category}</h3>
             <p className="font-display text-2xl text-gold mb-1">
-              ${item.montoMXN.toLocaleString("es-MX")}
+              ${item.monto.toLocaleString("es-MX")}
               <span className="text-xs text-muted-foreground"> MXN</span>
             </p>
             <p className="text-[11px] text-muted-foreground">{item.porcentaje}% del fondo</p>
