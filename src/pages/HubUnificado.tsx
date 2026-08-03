@@ -173,7 +173,7 @@ export default function HubUnificado() {
       </div>
 
       <div className="mt-10">
-        <ElegantPagination currentPage={current} totalPages={totalPages} onPageChange={setPage} />
+        <ElegantPagination page={current} totalPages={totalPages} onChange={setPage} />
       </div>
 
       <div className="mt-14 rounded-2xl border border-accent/30 bg-accent/5 p-8 text-center">
