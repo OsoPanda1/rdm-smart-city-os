@@ -55,6 +55,7 @@ import Foro from "./pages/Foro.tsx";
 import Kernel from "./pages/Kernel.tsx";
 import Media from "./pages/Media.tsx";
 import Manual from "./pages/Manual.tsx";
+import HubUnificado from "./pages/HubUnificado.tsx";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -143,6 +144,29 @@ const App = () => {
            <Route path="/media" element={<Media />} />
            <Route path="/podcast" element={<Media />} />
            <Route path="/manual" element={<Manual />} />
+           {/* Fusión unificada de los 9 repositorios */}
+           <Route path="/hub-unificado" element={<HubUnificado />} />
+           <Route path="/hub" element={<HubUnificado />} />
+           <Route path="/fusion-total" element={<HubUnificado />} />
+           {/* Alias heredados de los repos absorbidos */}
+           <Route path="/login" element={<Auth />} />
+           <Route path="/register" element={<Auth />} />
+           <Route path="/perfil" element={<Dashboard />} />
+           <Route path="/control-center" element={<NodoCero />} />
+           <Route path="/telemetry" element={<Kernel />} />
+           <Route path="/mapa-vivo" element={<Mapa />} />
+           <Route path="/feed" element={<ComunidadPage />} />
+           <Route path="/red-social" element={<ComunidadPage />} />
+           <Route path="/b2b" element={<NegociosPortal />} />
+           <Route path="/isabella" element={<RealitoAI />} />
+           <Route path="/wiki" element={<Manual />} />
+           <Route path="/juegos" element={<Membresias />} />
+           <Route path="/leaderboard" element={<Membresias />} />
+           <Route path="/donar" element={<Apoya />} />
+           <Route path="/quienes-somos" element={<About />} />
+           <Route path="/timeline" element={<Historia />} />
+           <Route path="/estacionamientos" element={<Servicios />} />
+           <Route path="/turismo" element={<Rutas />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

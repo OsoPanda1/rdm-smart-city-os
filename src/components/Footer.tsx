@@ -42,6 +42,7 @@ const Footer = () => {
               <Link to="/reglamento" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Reglamento</Link>
               <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Acceso</Link>
               <Link to="/kernel" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Kernel TAMV</Link>
+              <Link to="/hub-unificado" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Hub Unificado</Link>
               <Link to="/manual" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Manual de Diseño</Link>
               <Link to="/media" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Podcast</Link>
             </div>
