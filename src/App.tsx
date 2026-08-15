@@ -67,6 +67,7 @@ const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
     enforceIvoryBackground();
+    startTelemetry();
   }, []);
 
   return (
@@ -75,7 +76,9 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <MaintenanceGate>
         <BrowserRouter>
+          <RouteSEO />
           <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
