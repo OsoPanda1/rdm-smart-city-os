@@ -77,7 +77,7 @@ export default function ProgramaOperativo() {
             >
               <p className="text-[10px] uppercase tracking-[0.25em] text-accent mb-2">Núcleo {c.id}</p>
               <h3 className="font-display text-lg font-semibold">{c.name}</h3>
-              <p className="text-sm text-muted-foreground font-body mt-1">{c.description}</p>
+              <p className="text-sm text-muted-foreground font-body mt-1">{c.subtitle}</p>
               <p className="text-[11px] text-muted-foreground mt-3">{count} nodos operativos</p>
             </button>
           );
