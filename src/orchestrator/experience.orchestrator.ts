@@ -1,16 +1,4 @@
-const createHash = (algorithm: string) => ({
-  update: (data: string) => ({
-    digest: (encoding: string) => {
-      let hash = 0;
-      for (let i = 0; i < data.length; i++) {
-        const char = data.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash |= 0;
-      }
-      return Math.abs(hash).toString(16).padStart(8, '0');
-    }
-  })
-});
+import { sha256Hex } from "@/lib/crypto/sha256";
 import { MovementFilter } from "@/core/behavior/movement.filter";
 import { detectMovementPattern } from "@/core/behavior/pattern.detector";
 import { endManualSpan, setSpanAttribute, startManualSpan } from "@/instrumentation.node";
@@ -226,7 +214,7 @@ export class ExperienceOrchestrator {
       t.activityTimestamps.lastInteractionAt.toISOString(),
     ].join("|");
 
-    return createHash("sha256").update(raw).digest("hex").slice(0, 16);
+    return sha256Hex(raw).slice(0, 16);
   }
 
   private resolveIntent(totalScore: number, pattern: string): RetentionIntent {

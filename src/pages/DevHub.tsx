@@ -10,13 +10,13 @@ import {
   BookOpen, Users, ChevronRight,
 } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { callGateway } from "@/lib/tamv-gateway-client";
 import {
   tamvSpec, getAllDomains, getSpecByDomain, getEndpointCount,
   getDomainCounts, type TamvDomain, DOMAIN_META,
 } from "@/lib/tamv-spec";
 
-const API_BASE = import.meta.env.VITE_SUPABASE_URL ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1` : "/api";
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
 
 export default function DevHub() {
   const [search, setSearch] = useState("");
@@ -54,11 +54,8 @@ export default function DevHub() {
   const runTest = async () => {
     setTestLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("tamv-gateway", {
-        body: { operation: testOp, payload: {} },
-      });
-      if (error) throw error;
-      setTestResult(data);
+      const result = await callGateway(testOp);
+      setTestResult(result);
       toast.success(`${testOp} ejecutado`);
     } catch (e: unknown) {
       const errorMessage = e instanceof Error ? e.message : "Unknown error";
@@ -247,9 +244,10 @@ export default function DevHub() {
                     Todas las operaciones pasan por un solo endpoint gateway:
                   </p>
                   <pre className="p-3 rounded-lg bg-muted text-xs font-mono overflow-auto">
-{`POST ${API_BASE}/tamv-gateway
+{`GET ${API_BASE}/gemet/nodes
+GET ${API_BASE}/monitor/health
+POST ${API_BASE}/payments/checkout
 Content-Type: application/json
-Authorization: Bearer YOUR_JWT_TOKEN
 X-TAMV-Trace-ID: optional-trace-uuid
 
 {
