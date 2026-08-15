@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 type Module = { to: string; icon: any; title: string; desc: string; tag: string };
 
 const MODULES: Module[] = [
+  { to: "/programa-operativo", icon: Activity, title: "Programa Operativo", desc: "7 núcleos YUN, 35 nodos y datos territoriales verificados.", tag: "Operación" },
   { to: "/genesis", icon: Sparkles, title: "Génesis Unificado", desc: "Manifiesto vivo: todos los repos del ecosistema fusionados.", tag: "Fusión" },
   { to: "/hub-unificado", icon: Sparkles, title: "Hub Unificado", desc: "Los 9 repositorios finales fusionados y listos para desplegar.", tag: "Fusión" },
   { to: "/tamv-hub", icon: ScrollText, title: "TAMV Hub", desc: "Tesis soberana del Sistema Operativo Territorial.", tag: "Marco" },
