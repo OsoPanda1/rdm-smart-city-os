@@ -174,9 +174,14 @@ const App = () => {
            <Route path="/timeline" element={<Historia />} />
            <Route path="/estacionamientos" element={<Servicios />} />
            <Route path="/turismo" element={<Rutas />} />
+           {/* Programa general y operativo fusionado (nodo-cero / visitarealdelmonte / ldtocs) */}
+           <Route path="/programa-operativo" element={<ProgramaOperativo />} />
+           <Route path="/programa" element={<ProgramaOperativo />} />
+           <Route path="/operacion" element={<ProgramaOperativo />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        </MaintenanceGate>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
