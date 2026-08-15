@@ -73,3 +73,45 @@ Rutas críticas que deben responder 200 y renderizar sin errores de consola:
 
 Tras el primer despliegue, conecta el dominio en Vercel → Settings → Domains
 (por ejemplo `rdmdigital.mx` y `www.rdmdigital.mx`).
+
+## 7. Variables adicionales (SEO, mantenimiento y telemetría)
+
+| Variable | Obligatoria | Valor de ejemplo (producción) | Descripción |
+| --- | --- | --- | --- |
+| `VITE_SITE_URL` | Recomendada | `https://rdmdigital.mx` | Dominio canónico para `canonical`, Open Graph y `sitemap.xml` |
+| `VITE_MAINTENANCE_MODE` | No | `false` | `true` activa la pantalla de mantenimiento global sin tocar código |
+| `VITE_MAINTENANCE_MESSAGE` | No | `Estamos desplegando…` | Mensaje mostrado durante el mantenimiento |
+
+Valores reales de ejemplo para el backend gestionado del proyecto:
+
+```
+VITE_SUPABASE_URL=https://hgziffdntpjutuqaddbe.supabase.co
+VITE_SUPABASE_PROJECT_ID=hgziffdntpjutuqaddbe
+VITE_SUPABASE_PUBLISHABLE_KEY=<clave anon publicable del proyecto>
+VITE_SITE_URL=https://rdmdigital.mx
+VITE_MAINTENANCE_MODE=false
+```
+
+### Modo de mantenimiento
+
+1. Programado: pon `VITE_MAINTENANCE_MODE=true` en Vercel y redespliega.
+2. Inmediato (sin redeploy, por navegador): abre `https://<dominio>/?maintenance=on`.
+   Para salir: `?maintenance=off`; para volver al valor del entorno: `?maintenance=reset`.
+
+### SEO y sitemap
+
+- Los metadatos por ruta viven en `src/lib/seo.ts` y se aplican con `<RouteSEO/>` (título, descripción, canonical, OG/Twitter, `robots` y JSON-LD).
+- `public/sitemap.xml` incluye las 31 rutas indexables; `public/robots.txt` bloquea `/auth`, `/dashboard`, `/admin`, `/perfil` y declara el sitemap.
+- Al agregar una ruta pública nueva, añádela a `ROUTE_SEO` y regenera el sitemap.
+
+### Telemetría
+
+`src/lib/telemetry.ts` captura errores globales, promesas rechazadas, tiempos de carga (TTFB/DOM/load) y navegación entre rutas. Los eventos quedan en un búfer local (`rdm:telemetry:buffer`, últimos 100) y los errores se emiten a la consola para inspeccionarlos en los logs de Vercel.
+
+## 8. Seguridad de datos (RLS y roles)
+
+- `profiles`: lectura solo para usuarios autenticados (sin exposición anónima de PII).
+- `guardian_actions`: escritura/actualización/borrado exclusivos de `admin`; lectura pública del tablero.
+- `interactions`: inserción abierta para telemetría, lectura solo para `admin`.
+- Catálogos públicos (`dichos`, `places`, `packages`, `package_places`, `package_businesses`, `shuttle_routes`, `federation_data_streams`): lectura pública, escritura exclusiva de `admin` vía `has_role(auth.uid(),'admin')`.
+- Los roles viven en `user_roles` y nunca en el perfil del usuario.
