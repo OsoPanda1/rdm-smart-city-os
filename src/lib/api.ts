@@ -19,9 +19,9 @@ export const paymentsApi = {
       body: JSON.stringify({
         amount,
         currency,
-        message,
+        concept: message,
         type: "donation",
-        paymentMethod: "card",
+        method: "card",
       }),
     });
 
