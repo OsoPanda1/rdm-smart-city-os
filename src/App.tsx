@@ -56,6 +56,10 @@ import Kernel from "./pages/Kernel.tsx";
 import Media from "./pages/Media.tsx";
 import Manual from "./pages/Manual.tsx";
 import HubUnificado from "./pages/HubUnificado.tsx";
+import ProgramaOperativo from "./pages/ProgramaOperativo.tsx";
+import RouteSEO from "@/components/RouteSEO";
+import MaintenanceGate from "@/components/MaintenanceGate";
+import { startTelemetry } from "@/lib/telemetry";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
@@ -63,6 +67,7 @@ const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
     enforceIvoryBackground();
+    startTelemetry();
   }, []);
 
   return (
@@ -71,7 +76,9 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <MaintenanceGate>
         <BrowserRouter>
+          <RouteSEO />
           <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -167,9 +174,14 @@ const App = () => {
            <Route path="/timeline" element={<Historia />} />
            <Route path="/estacionamientos" element={<Servicios />} />
            <Route path="/turismo" element={<Rutas />} />
+           {/* Programa general y operativo fusionado (nodo-cero / visitarealdelmonte / ldtocs) */}
+           <Route path="/programa-operativo" element={<ProgramaOperativo />} />
+           <Route path="/programa" element={<ProgramaOperativo />} />
+           <Route path="/operacion" element={<ProgramaOperativo />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        </MaintenanceGate>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
