@@ -56,6 +56,10 @@ import Kernel from "./pages/Kernel.tsx";
 import Media from "./pages/Media.tsx";
 import Manual from "./pages/Manual.tsx";
 import HubUnificado from "./pages/HubUnificado.tsx";
+import ProgramaOperativo from "./pages/ProgramaOperativo.tsx";
+import RouteSEO from "@/components/RouteSEO";
+import MaintenanceGate from "@/components/MaintenanceGate";
+import { startTelemetry } from "@/lib/telemetry";
 import { enforceIvoryBackground } from "@/lib/design-guardrails";
 
 const queryClient = new QueryClient();
